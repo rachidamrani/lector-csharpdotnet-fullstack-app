@@ -1,0 +1,46 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+
+
+<nav class="flex justify-between items-center py-2 px-4 border-b-2 border-b-gray-300">
+    <NavLink class="logo flex items-center justify-between gap-2 w-fit" href="/">
+        <img src="images/book.svg" width="50" alt="book_logo" />
+        <h1 class="text-4xl font-extrabold">LectorNet</h1>
+    </NavLink>
+
+    <AuthorizeView>
+        <div class="main_menu">
+            <NavLink class="menu_element" href="relations">
+                <img src="images/friends.svg" width="20" alt="book_logo" />
+                Relations
+            </NavLink>
+            <NavLink class="menu_element" href="book/new">
+                <img src="images/add.svg" width="20" alt="book_logo" />
+                Ajouter un livre
+            </NavLink>
+            <NavLink class="menu_element" href="challenge/new">
+                <img src="images/dumbell.svg" width="20" alt="book_logo" />
+                Lancer un challenge
+            </NavLink>
+            <NavLink class="menu_element" href="book/exchange/new">
+                <img src="images/exchange.svg" width="20" alt="book_logo" />
+                Echanger un livre
+            </NavLink>
+        </div>
+    </AuthorizeView>
+
+    <div class="authentication_buttons">
+        <AuthorizeView>
+            <Authorized>
+                <NavLink class="base-button primary-color" href="auth/logout" id="logoutBtn">Se déconnecter
+                </NavLink>
+            </Authorized>
+            <NotAuthorized>
+                <NavLink class="base-button bg-black" href="auth/register">S'inscrire</NavLink>
+                <NavLink class="base-button primary-color" href="auth/login">Se connecter</NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</nav>

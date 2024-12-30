@@ -1,0 +1,31 @@
+section {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 2rem;
+    align-items: center;
+    padding: 2rem 0 2rem 0;
+    min-width: 70%;
+    margin : 0 auto;
+    height: 100%;
+    
+    .main_paragraph {
+        font-size: 3rem;
+        line-height: 1;
+        font-weight: 800;
+        margin-bottom: 1.25rem;
+    }
+    
+    .secondary_paragraph {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    img {
+        margin: 0 auto;
+    }
+    
+    @media(max-width: 963px) {
+        grid-template-columns: 1fr;
+    }
+}

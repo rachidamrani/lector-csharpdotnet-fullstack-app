@@ -1,0 +1,17 @@
+@page "/auth/logout"
+@using LectorNet.UI.Authentication
+@using Microsoft.AspNetCore.Authentication
+
+@inject NavigationManager NavigationManager
+
+
+@code {
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await HttpContext.SignOutAsync(AuthConstants.AuthScheme);
+
+        NavigationManager.NavigateTo("/", replace: true, forceLoad: true);
+    }
+}

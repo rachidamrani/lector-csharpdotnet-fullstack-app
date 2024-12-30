@@ -1,0 +1,30 @@
+section {
+    min-width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        font-weight: 700;
+    }
+
+    .addBookForm {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        label {
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+
+        @media (max-width: 570px) {
+            grid-template-columns: 1fr;
+        }
+    }
+}

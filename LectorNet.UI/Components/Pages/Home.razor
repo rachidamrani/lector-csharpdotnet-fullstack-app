@@ -1,0 +1,35 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+
+
+<section>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div>
+                <p class="main_paragraph">
+                    Chaque page, <br />
+                    un nouveau défi. <br />
+                    Chaque lecteur, <br />
+                    un nouveau ami.
+                </p>
+                <p class="secondary_paragraph">
+                    Découvrez une communauté de lecteurs passionnés, suivez vos progrès et relevez des défis littéraires
+                    qui
+                    vous font grandir.
+                </p>
+                <a class="base-button primary-color" href="/auth/register">Lancez vous !</a>
+            </div>
+            <div>
+                <img src="images/readers.svg" alt="readers">
+            </div>
+        </NotAuthorized>
+        <Authorized>
+            <p>User informations</p>
+        </Authorized>
+    </AuthorizeView>
+
+</section>

@@ -1,0 +1,25 @@
+.main_menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    
+    .menu_element {
+        display: flex;
+        
+        img {
+            margin-right: .2rem;
+        }
+    }
+    
+    @media (max-width: 1170px) {
+        display: none;
+    }
+}
+
+
+@media (max-width: 520px) {
+    .authentication_buttons {
+        display: none;
+    }
+}

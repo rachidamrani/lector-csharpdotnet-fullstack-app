@@ -1,0 +1,146 @@
+@page "/book/new"
+
+@using LectorNet.Domain.Models.Books
+@using LectorNet.UI.Common
+@using LectorNet.UI.ViewModels
+@using Microsoft.AspNetCore.Authorization
+
+@rendermode InteractiveServer
+
+@inject HttpClient HttpClient
+@inject AuthService AuthService
+
+@attribute [Authorize]
+
+<section>
+    <h2> Ajouter un livre </h2>
+    @if (_addBookModel is not null)
+    {
+        <EditForm Model="_addBookModel" OnValidSubmit="HandleAddBook">
+            <DataAnnotationsValidator />
+            <div class="addBookForm">
+                <div class="form-group">
+                    <label>Titre : </label>
+                    <InputText @bind-Value="_addBookModel.Title" placeholder="Titre" class="base-input" />
+                    <ValidationMessage For="() => _addBookModel.Title" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Auteur : </label>
+                    <InputText @bind-Value="_addBookModel.Author" placeholder="Auteur" class="base-input" />
+                    <ValidationMessage For="() => _addBookModel.Author" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Isbn : </label>
+                    <InputText @bind-Value="_addBookModel.Isbn" placeholder="Isbn" class="base-input" />
+                    <ValidationMessage For="() => _addBookModel.Isbn" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Genre : </label>
+                    <InputSelect @bind-Value="_addBookModel.Genre" placeholder="Genre" class="base-input">
+                        <option value="">Genre</option>
+                        @foreach (BookGenre genre in BookGenre.List)
+                        {
+                            <option value="@(genre.Name)">@genre.Name</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => _addBookModel.Genre" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Année de publication : </label>
+                    <InputText @bind-Value="_addBookModel.PublicationYear" placeholder="Année de publication"
+                        class="base-input" />
+                    <ValidationMessage For="() => _addBookModel.PublicationYear" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Maison d'édition : </label>
+                    <InputText @bind-Value="_addBookModel.PublishingHouse" placeholder="Maison d'édition"
+                        class="base-input" />
+                    <ValidationMessage For="() => _addBookModel.PublishingHouse" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Nombre de pages : </label>
+                    <InputNumber step="1" min="0" @bind-Value="_addBookModel.NumberOfPages" placeholder="Nombre de pages"
+                        class="base-input" />
+                    <ValidationMessage For="() => _addBookModel.NumberOfPages" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <label>Couverture du livre : </label>
+                    <InputFile @bind-Value="_addBookModel.BookCoverLink" class="base-input" OnChange="OnFileChange" />
+                    <ValidationMessage For="() => _addBookModel.BookCoverLink" class="error-input-message" />
+                </div>
+                <div class="form-group">
+                    <InputCheckbox @bind-Value="_addBookModel.AlreadyRead" placeholder="Livre lu" />
+                    <label>Avez-vous déja lu ce livre ? </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="base-button primary-color"> Ajouter </button>
+            </div>
+        </EditForm>
+    }
+</section>
+
+@if (!string.IsNullOrEmpty(_errorMessage) && _modalStatus == ModalStatus.ModalIsOpen)
+{
+    <Alert Title="Erreur !" Message="@_errorMessage" IsSuccess=@_isSuccess CloseModalCallback="CloseModal" />
+}
+
+@if (_isSuccess && _modalStatus == ModalStatus.ModalIsOpen)
+{
+    <Alert Title="Félicitations !" Message="Le livre a été bien ajouté" IsSuccess=@_isSuccess
+    CloseModalCallback="CloseModal" />
+}
+
+@code {
+    private AddBookModel? _addBookModel = new();
+
+    private string? _errorMessage;
+
+    private bool _isSuccess;
+
+    private ModalStatus _modalStatus = ModalStatus.ModalIsClosed;
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        string format = "images/png";
+        IBrowserFile resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
+        byte[] buffer = new byte[resizedImage.Size];
+
+        await resizedImage.OpenReadStream().ReadAsync(buffer);
+        string imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+
+        _addBookModel!.BookCoverLink = imageData;
+    }
+
+    private async Task HandleAddBook()
+    {
+        string? connectedUserId = await AuthService.GetConnectedUserId();
+
+        if (connectedUserId is not null)
+        {
+            _addBookModel!.UserId = connectedUserId;
+        }
+
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(
+        "http://localhost:5013/api/book",
+        _addBookModel);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            _errorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())?.Detail;
+        }
+        else
+        {
+            _isSuccess = true;
+        }
+
+        _modalStatus = ModalStatus.ModalIsOpen;
+    }
+
+    private void CloseModal()
+    {
+        _modalStatus = ModalStatus.ModalIsClosed;
+        _errorMessage = string.Empty;
+        _isSuccess = false;
+    }
+}

@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.Domain", "LectorNet.Domain\LectorNet.Domain.csproj", "{D17AE4C3-D060-47B9-B7E8-DA3318F2439B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.Application", "LectorNet.Application\LectorNet.Application.csproj", "{E5358FF5-87C0-4FB5-BA58-9FAFDE46BB8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.Infrastructure", "LectorNet.Infrastructure\LectorNet.Infrastructure.csproj", "{D866B9B2-E8FA-4391-9FCA-DBA8665E62CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.Api", "LectorNet.Api\LectorNet.Api.csproj", "{BDB80AF1-5EF0-439C-9833-30C0CEEC79D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.Contracts", "LectorNet.Contracts\LectorNet.Contracts.csproj", "{5C842FFE-B4F3-44C7-94D3-0C70F08CC373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.Unit.Tests", "LectorNet.Unit.Tests\LectorNet.Unit.Tests.csproj", "{8430655E-40BE-49EB-909C-DE98F6F24C28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LectorNet.UI", "LectorNet.UI\LectorNet.UI.csproj", "{D434B9EF-7AFB-4132-A47F-BF79B44D22ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D17AE4C3-D060-47B9-B7E8-DA3318F2439B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D17AE4C3-D060-47B9-B7E8-DA3318F2439B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D17AE4C3-D060-47B9-B7E8-DA3318F2439B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D17AE4C3-D060-47B9-B7E8-DA3318F2439B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5358FF5-87C0-4FB5-BA58-9FAFDE46BB8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5358FF5-87C0-4FB5-BA58-9FAFDE46BB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5358FF5-87C0-4FB5-BA58-9FAFDE46BB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5358FF5-87C0-4FB5-BA58-9FAFDE46BB8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D866B9B2-E8FA-4391-9FCA-DBA8665E62CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D866B9B2-E8FA-4391-9FCA-DBA8665E62CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D866B9B2-E8FA-4391-9FCA-DBA8665E62CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D866B9B2-E8FA-4391-9FCA-DBA8665E62CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB80AF1-5EF0-439C-9833-30C0CEEC79D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB80AF1-5EF0-439C-9833-30C0CEEC79D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB80AF1-5EF0-439C-9833-30C0CEEC79D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB80AF1-5EF0-439C-9833-30C0CEEC79D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C842FFE-B4F3-44C7-94D3-0C70F08CC373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C842FFE-B4F3-44C7-94D3-0C70F08CC373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C842FFE-B4F3-44C7-94D3-0C70F08CC373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C842FFE-B4F3-44C7-94D3-0C70F08CC373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8430655E-40BE-49EB-909C-DE98F6F24C28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8430655E-40BE-49EB-909C-DE98F6F24C28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8430655E-40BE-49EB-909C-DE98F6F24C28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8430655E-40BE-49EB-909C-DE98F6F24C28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D434B9EF-7AFB-4132-A47F-BF79B44D22ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D434B9EF-7AFB-4132-A47F-BF79B44D22ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D434B9EF-7AFB-4132-A47F-BF79B44D22ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D434B9EF-7AFB-4132-A47F-BF79B44D22ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

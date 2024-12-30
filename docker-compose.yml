@@ -1,0 +1,35 @@
+services:
+  backend: # Web API service
+    container_name: lector-net-web-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - mysqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - lectornetwork
+    restart: on-failure
+
+  mysqlserver: # Database service
+    container_name: mysqlserver-container
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: LectorNetDB
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqlvolume:/var/lib/mysql
+    networks:
+      - lectornetwork
+
+networks:
+  lectornetwork:
+
+volumes:
+  mysqlvolume:

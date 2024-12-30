@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+
+COPY ["LectorNet.Api/LectorNet.Api.csproj","LectorNet.Api/"]
+COPY ["LectorNet.Application/LectorNet.Application.csproj","LectorNet.Application/"]
+COPY ["LectorNet.Contracts/LectorNet.Contracts.csproj","LectorNet.Contracts/"]
+COPY ["LectorNet.Infrastructure/LectorNet.Infrastructure.csproj","LectorNet.Infrastructure/"]
+COPY ["LectorNet.Domain/LectorNet.Domain.csproj","LectorNet.Domain/"]
+
+RUN dotnet restore "LectorNet.Api/LectorNet.Api.csproj"
+COPY . .
+WORKDIR "/src/LectorNet.Api"
+RUN dotnet build "LectorNet.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "LectorNet.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT [ "dotnet","LectorNet.Api.dll" ]
