@@ -1,3 +1,4 @@
+using LectorNet.Api.ValidationAttributes;
 using LectorNet.Application.Books.Commands.CreateBook;
 using LectorNet.Application.Books.Commands.RemoveBook;
 using LectorNet.Application.Books.Commands.UpdateBook;
@@ -39,9 +40,12 @@ public class BookController(ISender sender) : ApiController
     }
     
     [HttpPost("new")]
+    [RequireConnectedUser]
     public async Task<IActionResult> AddBook(CreateBookRequest request)
     {
-        var command = new CreatBookCommand(
+        var connectedUserId = GetConnectedUser();
+        
+        var command = new CreateBookCommand(
             request.Title,
             request.Author,
             request.Isbn,
@@ -50,8 +54,8 @@ public class BookController(ISender sender) : ApiController
             request.PublishingHouse,
             request.NumberOfPages,
             request.BookCoverLink,
-            request.UserId,
-            request.AlreadyRead
+            request.AlreadyRead,
+            connectedUserId
         );
 
         var createBookResult = await sender.Send(command);
@@ -62,9 +66,12 @@ public class BookController(ISender sender) : ApiController
     }
     
     [HttpDelete("{bookId:guid}")]
+    [RequireConnectedUser]
     public async Task<IActionResult> RemoveBook(Guid bookId)
     {
-        var command = new RemoveBookCommand(bookId);
+        var connectedUserId = GetConnectedUser();
+        
+        var command = new RemoveBookCommand(bookId, connectedUserId);
         
         var removeBookResult = await sender.Send(command);
 
@@ -74,8 +81,11 @@ public class BookController(ISender sender) : ApiController
     }
 
     [HttpPut("{bookId:guid}")]
+    [RequireConnectedUser]
     public async Task<IActionResult> UpdateBook(Guid bookId, UpdateBookRequest request)
     {
+        var connectedUserId = GetConnectedUser();
+        
         var command = new UpdateBookCommand(
             bookId,
             request.Title,
@@ -86,8 +96,8 @@ public class BookController(ISender sender) : ApiController
             request.PublishingHouse,
             request.NumberOfPages,
             request.BookCoverLink,
-            request.UserId,
-            request.AlreadyRead);
+            request.AlreadyRead,
+            connectedUserId);
         
         var updateBookResult = await sender.Send(command);
 

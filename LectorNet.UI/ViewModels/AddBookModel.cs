@@ -26,8 +26,6 @@ public class AddBookModel
     [Range(1, int.MaxValue, ErrorMessage = "Le nombre de pages doit être un entier supérieur strictement à zéro")]
     public int NumberOfPages { get; set; }
 
-    public string UserId { get; set; } = string.Empty;
-
     public string BookCoverLink { get; set; } = string.Empty;
 
     public bool AlreadyRead { get; set; }

@@ -13,5 +13,5 @@ public record UpdateBookCommand(Guid BookId,
     string PublishingHouse,
     int NumberOfPages,
     string BookCoverLink,
-    string UserId,
-    bool AlreadyRead) : IRequest<ErrorOr<Book>>;
+    bool AlreadyRead,
+    string UserId) : IRequest<ErrorOr<Book>>;

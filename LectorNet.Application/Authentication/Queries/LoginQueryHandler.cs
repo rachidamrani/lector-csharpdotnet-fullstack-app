@@ -4,10 +4,14 @@ using LectorNet.Application.Common;
 using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace LectorNet.Application.Authentication.Queries;
 
-public class LoginQueryHandler(IPasswordHasher passwordHasher, IUsersRepository usersRepository)
+public class LoginQueryHandler(
+    IPasswordHasher passwordHasher,
+    IUsersRepository usersRepository,
+    ILogger<LoginQueryHandler> logger)
     : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(
@@ -17,6 +21,8 @@ public class LoginQueryHandler(IPasswordHasher passwordHasher, IUsersRepository 
     {
         try
         {
+            logger.LogInformation("User with email {Email} is logging in.", query.Email);
+            
             var user = await usersRepository.GetByEmailAsync(query.Email);
 
             if (user is null)
@@ -26,11 +32,16 @@ public class LoginQueryHandler(IPasswordHasher passwordHasher, IUsersRepository 
 
             if (!passwordIsCorrect)
                 return AuthenticationErrors.InvalidCredentials;
+            
+            logger.LogInformation("User with email {Email} logged in successfully!", query.Email);
 
             return new AuthenticationResult(user);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            logger.LogError("Error logging user with email {Email}: {ErrorMessage}", 
+                query.Email, e.Message);
+
             return Errors.UnexpectedError;
         }
     }

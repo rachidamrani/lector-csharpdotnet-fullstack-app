@@ -4,7 +4,7 @@ using MediatR;
 
 namespace LectorNet.Application.Books.Commands.CreateBook;
 
-public record CreatBookCommand(
+public record CreateBookCommand(
     string Title,
     string Author,
     string Isbn,
@@ -13,6 +13,5 @@ public record CreatBookCommand(
     string PublishingHouse,
     int NumberOfPages,
     string BookCoverLink,
-    string UserId,
-    bool AlreadyRead
-    ) : IRequest<ErrorOr<Book>>;
+    bool AlreadyRead,
+    string userId) : IRequest<ErrorOr<Book>>;

@@ -2,13 +2,13 @@
 
 @using LectorNet.Domain.Models.Books
 @using LectorNet.UI.Common
+@using LectorNet.UI.Services
 @using LectorNet.UI.ViewModels
 @using Microsoft.AspNetCore.Authorization
 
 @rendermode InteractiveServer
 
-@inject HttpClient HttpClient
-@inject AuthService AuthService
+@inject ApiService ApiService
 
 @attribute [Authorize]
 
@@ -92,7 +92,7 @@
 }
 
 @code {
-    private AddBookModel? _addBookModel = new();
+    private readonly AddBookModel? _addBookModel = new();
 
     private string? _errorMessage;
 
@@ -105,30 +105,28 @@
         string format = "images/png";
         IBrowserFile resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
         byte[] buffer = new byte[resizedImage.Size];
-
-        await resizedImage.OpenReadStream().ReadAsync(buffer);
+        var readAsync = await resizedImage.OpenReadStream().ReadAsync(buffer);
         string imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-
         _addBookModel!.BookCoverLink = imageData;
     }
 
     private async Task HandleAddBook()
     {
-        string? connectedUserId = await AuthService.GetConnectedUserId();
-
-        if (connectedUserId is not null)
-        {
-            _addBookModel!.UserId = connectedUserId;
-        }
-
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync(
-        "http://localhost:5013/api/book",
-        _addBookModel);
+        var response = await ApiService.PostAsync("books/new",_addBookModel!);
 
         if (!response.IsSuccessStatusCode)
         {
-            _errorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())?.Detail;
-        }
+            var errorResponse = (await response.Content.ReadFromJsonAsync<ErrorResponse>());
+
+            if (errorResponse?.Title == "One or more validation errors occurred.")
+            {
+                _errorMessage = "Problème de validations !";
+            }
+            else
+            {
+                _errorMessage = errorResponse?.Detail;
+            }
+    }
         else
         {
             _isSuccess = true;

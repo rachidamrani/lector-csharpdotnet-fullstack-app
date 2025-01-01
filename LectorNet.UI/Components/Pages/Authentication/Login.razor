@@ -6,7 +6,6 @@
 @using LectorNet.UI.ViewModels
 @using Microsoft.AspNetCore.Authentication
 
-@inject AuthService AuthService
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
@@ -45,12 +44,12 @@
     [SupplyParameterFromForm]
     private LoginModel LoginModel { get; set; } = new();
 
-    private ErrorResponse? _errorResponse = new();
+    private ErrorResponse? _errorResponse;
 
     private async Task AuthenticateAsync()
     {
         // Add a try catch and delegate this code to the AuthService
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/authentication/login",
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/auth/login",
         LoginModel);
 
         if (response.IsSuccessStatusCode)
@@ -79,9 +78,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (await AuthService.UserIsAuthenticated())
-        {
-            NavigationManager.NavigateTo("/welcome");
-        }
+        // TODO : redirect after successful login
     }
 }

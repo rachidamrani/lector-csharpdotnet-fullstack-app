@@ -1,58 +1,12 @@
 using FluentValidation;
+using LectorNet.Application.Books.Commands.CreateBook;
 using LectorNet.Domain.Models.Books;
 
-namespace LectorNet.Application.Books.Commands.CreateBook;
+namespace LectorNet.Application.Books.Commands.UpdateBook;
 
-public static class BookCommandValidators
+public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
 {
-    public static bool IsValidIsbn10(string isbn)
-    {
-        if (string.IsNullOrWhiteSpace(isbn) || isbn.Length != 10)
-            return false;
-
-        int sum = 0;
-
-        for (int i = 0; i < 9; i++)
-        {
-            if (!char.IsDigit(isbn[i]))
-                return false;
-
-            sum += (isbn[i] - '0') * (i + 1);
-        }
-
-        char checksum = isbn[9];
-        int checksumValue = (checksum == 'X' || checksum == 'x') ? 10 : (checksum - '0');
-
-        if (!char.IsDigit(checksum) && checksum != 'X' && checksum != 'x')
-            return false;
-
-        return sum % 11 == checksumValue;
-    }
-
-
-    public static bool IsValidIsbn13(string isbn)
-    {
-        if (string.IsNullOrWhiteSpace(isbn) || isbn.Length != 13 || !isbn.All(char.IsDigit))
-            return false;
-
-        int sum = 0;
-
-        for (int i = 0; i < 12; i++)
-        {
-            int digit = isbn[i] - '0';
-            sum += digit * (i % 2 == 0 ? 1 : 3);
-        }
-
-        int checksum = (10 - (sum % 10)) % 10;
-
-        return (isbn[12] - '0') == checksum;
-    }
-}
-
-
-public class CreateBookCommandValidator : AbstractValidator<CreatBookCommand>
-{
-    public CreateBookCommandValidator()
+    public UpdateBookCommandValidator()
     {
         RuleFor(b => b.Title)
             .NotEmpty()

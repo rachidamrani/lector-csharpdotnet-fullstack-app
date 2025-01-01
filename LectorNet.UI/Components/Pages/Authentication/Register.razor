@@ -5,7 +5,6 @@
 
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-@inject AuthService AuthService
 
 
 <section class="h-full mx-auto flex flex-col items-center justify-center w-80">
@@ -45,12 +44,12 @@
 
 @code {
     private readonly RegisterUserModel RegisterUserModel = new();
-    
-    private ErrorResponse? _errorResponse = new();
+
+    private ErrorResponse? _errorResponse;
 
     private async Task HandleValideSubmit()
     {
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/authentication/register", RegisterUserModel);
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/auth/register", RegisterUserModel);
 
         if (response.IsSuccessStatusCode)
         {

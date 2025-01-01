@@ -24,8 +24,6 @@ public static class AuthenticationDependencyInjection
                 }
             );
 
-        services.AddScoped<AuthService>();
-
         return services;
     }
 }

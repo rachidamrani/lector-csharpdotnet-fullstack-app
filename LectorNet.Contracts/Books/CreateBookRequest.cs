@@ -9,5 +9,4 @@ public record CreateBookRequest(
     string PublishingHouse,
     int NumberOfPages,
     string BookCoverLink,
-    string UserId,
     bool AlreadyRead = false);

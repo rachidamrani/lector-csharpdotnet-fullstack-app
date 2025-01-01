@@ -1,5 +1,6 @@
 using LectorNet.UI.Authentication;
 using LectorNet.UI.Components;
+using LectorNet.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddBlazorAppAuthentication();
 
 builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<ApiService>();
 
 // builder.Services.AddAuthorizationCore(options =>
 // {

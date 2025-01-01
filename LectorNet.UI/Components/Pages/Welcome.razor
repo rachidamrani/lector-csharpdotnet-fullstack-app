@@ -2,24 +2,17 @@
 
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
 
-@inject AuthService AuthService
 
 @attribute [Authorize]
 
 <AuthorizeView>
     <Authorized>
-        <h3 class="text-3xl">Bonjour @_currentUser.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value !</h3>
+        <h3 class="text-3xl">Bonjour User !</h3>
     </Authorized>
 </AuthorizeView>
 
 
 @code {
-    private ClaimsPrincipal? _currentUser;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _currentUser = await AuthService.GetConnectedUser();
-    }
+    
 }

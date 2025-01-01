@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using ErrorOr;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LectorNet.Api.Controllers;
@@ -30,7 +30,7 @@ public class ApiController : ControllerBase
         return Problem(statusCode: statusCode, detail: error.Description);
     }
 
-    protected IActionResult ValidationProblem(List<Error> errors)
+    private IActionResult ValidationProblem(List<Error> errors)
     {
         var modelStateDictionary = new ModelStateDictionary();
 
@@ -43,4 +43,6 @@ public class ApiController : ControllerBase
 
         return ValidationProblem(modelStateDictionary);
     }
+
+    protected string GetConnectedUser() => HttpContext.Request.Headers["X-User-Id"][0]!;
 }
