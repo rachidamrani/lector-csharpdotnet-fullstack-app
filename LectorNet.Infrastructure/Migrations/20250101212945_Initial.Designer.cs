@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LectorNet.Infrastructure.Migrations
 {
     [DbContext(typeof(LectorNetDbContext))]
-    [Migration("20250101123107_Initial")]
+    [Migration("20250101212945_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

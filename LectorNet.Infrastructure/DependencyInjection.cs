@@ -3,7 +3,6 @@ using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
 using LectorNet.Infrastructure.Authentication.PasswordHasher;
 using LectorNet.Infrastructure.Books;
-using LectorNet.Infrastructure.Books.Persistence;
 using LectorNet.Infrastructure.Common.Persistence;
 using LectorNet.Infrastructure.Users;
 using Microsoft.Extensions.DependencyInjection;

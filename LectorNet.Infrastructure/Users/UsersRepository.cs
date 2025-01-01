@@ -32,9 +32,9 @@ public class UsersRepository(LectorNetDbContext dbContext) : IUsersRepository
         throw new NotImplementedException();
     }
 
-    public async Task<bool> ExistByEmailAsync(string Email)
+    public async Task<bool> ExistByEmailAsync(string email)
     {
-        return await dbContext.Users.AnyAsync(user => user.Email == Email);
+        return await dbContext.Users.AnyAsync(user => user.Email == email);
     }
 
     public async Task<User?> GetByEmailAsync(string email)
