@@ -1,0 +1,30 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+
+COPY ["LectorNet.UI/LectorNet.UI.csproj","LectorNet.UI/"]
+COPY ["LectorNet.Application/LectorNet.Application.csproj","LectorNet.Application/"]
+COPY ["LectorNet.Contracts/LectorNet.Contracts.csproj","LectorNet.Contracts/"]
+COPY ["LectorNet.Domain/LectorNet.Domain.csproj","LectorNet.Domain/"]
+
+RUN dotnet restore "LectorNet.UI/LectorNet.UI.csproj"
+COPY . .
+WORKDIR "/src/LectorNet.UI"
+RUN dotnet build "LectorNet.UI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "LectorNet.UI.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+
+EXPOSE 80
+EXPOSE 443
+ENV ASPNETCORE_URLS=http://+:80
+ENTRYPOINT [ "dotnet","LectorNet.UI.dll" ]
