@@ -1,30 +1,25 @@
-using System.Text;
 using LectorNet.Application.Books;
 using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
 using LectorNet.Infrastructure.Authentication.PasswordHasher;
+using LectorNet.Infrastructure.Books;
 using LectorNet.Infrastructure.Books.Persistence;
 using LectorNet.Infrastructure.Common.Persistence;
 using LectorNet.Infrastructure.Users;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LectorNet.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        return services.AddPersistence(connectionString);
+        return services.AddPersistence();
     }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services, string connectionString)
+    private static IServiceCollection AddPersistence(this IServiceCollection services)
     {
-        services.AddDbContext<LectorNetDbContext>(options =>
-        {
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-        }, ServiceLifetime.Scoped, ServiceLifetime.Singleton);
+        services.AddDbContext<LectorNetDbContext>();
 
         services.AddScoped<IBooksRepository, BooksRepository>();
         services.AddScoped<IUsersRepository,UsersRepository>();

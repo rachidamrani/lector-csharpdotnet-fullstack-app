@@ -25,6 +25,12 @@ public class LectorNetDbContext(DbContextOptions<LectorNetDbContext> options) : 
     public DbSet<UserReview> UsersReviews => Set<UserReview>();
     public DbSet<Invitation> Invitations => Set<Invitation>();
     public DbSet<Message> Messages => Set<Message>();
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(
+            "Server=localhost,1433;Database=LectorNetDB;User Id=sa;Password=Pass123@@;Encrypt=False;");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

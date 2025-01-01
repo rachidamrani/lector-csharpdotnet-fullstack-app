@@ -3,7 +3,7 @@ using LectorNet.Domain.Models.Books;
 using LectorNet.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace LectorNet.Infrastructure.Books.Persistence;
+namespace LectorNet.Infrastructure.Books;
 
 public class BooksRepository(LectorNetDbContext dbContext) : IBooksRepository
 {

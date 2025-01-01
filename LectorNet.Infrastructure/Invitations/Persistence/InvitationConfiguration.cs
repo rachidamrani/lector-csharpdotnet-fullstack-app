@@ -1,6 +1,5 @@
 using LectorNet.Domain.Models.Invitation;
 using LectorNet.Domain.Models.Invitations;
-using LectorNet.Infrastructure.Common.ValueGenerators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -32,9 +31,5 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
                 invitationStatus => invitationStatus.Value,
                 value => InvitationStatus.FromValue(value)
                 );
-        
-        // builder
-        //     .Property(i => i.CreatedAt)
-        //     .HasValueGenerator<CreatedDateGenerator>();
     }
 }

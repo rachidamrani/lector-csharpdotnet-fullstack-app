@@ -6,23 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder
-    .Services.AddPresentation()
+builder.Services
+    .AddPresentation()
     .AddApplication()
-    .AddInfrastructure(
-        builder.Configuration.GetConnectionString("MySqlDefaultConnection")!,
-        builder.Configuration);
+    .AddInfrastructure();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<LectorNetDbContext>();
-    if (!context.Books.Any() && !context.Users.Any())
-    {
-        context.Database.Migrate();
-    }
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var context = scope.ServiceProvider.GetRequiredService<LectorNetDbContext>();
+//     if (!context.Books.Any() && !context.Users.Any())
+//     {
+//         context.Database.Migrate();
+//     }
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

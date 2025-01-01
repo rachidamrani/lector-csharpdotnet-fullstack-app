@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LectorNet.Infrastructure.Migrations
 {
     [DbContext(typeof(LectorNetDbContext))]
-    [Migration("20241230193715_Initial")]
+    [Migration("20250101123107_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,33 +21,33 @@ namespace LectorNet.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("LectorNet.Domain.Models.BookExchanges.BookExchange", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("OwnerId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RequesterId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -65,130 +65,80 @@ namespace LectorNet.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("AlreadyRead")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Author")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BookCoverLink")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Genre")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Isbn")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumberOfPages")
                         .HasColumnType("int");
 
                     b.Property<string>("PublicationYear")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PublishingHouse")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("27c9a909-1df6-4bb7-ba85-ef5d8d7694b3"),
-                            AlreadyRead = true,
-                            Author = "J.D. Salinger",
-                            BookCoverLink = "https://example.com/catcher-in-the-rye.jpg",
-                            CreatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 724, DateTimeKind.Local).AddTicks(3360),
-                            Genre = "Fiction",
-                            Isbn = "9780316769488",
-                            NumberOfPages = 277,
-                            PublicationYear = "1951",
-                            PublishingHouse = "Little, Brown and Company",
-                            Title = "The Catcher in the Rye",
-                            UpdatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 724, DateTimeKind.Local).AddTicks(3570),
-                            UserId = new Guid("4cccf9b3-459a-4d06-95c5-222e0451ca3a")
-                        },
-                        new
-                        {
-                            Id = new Guid("d927fcdc-7c4c-41de-b553-c2fc6e63d816"),
-                            AlreadyRead = false,
-                            Author = "George Orwell",
-                            BookCoverLink = "https://example.com/1984.jpg",
-                            CreatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 724, DateTimeKind.Local).AddTicks(3710),
-                            Genre = "Dystopian",
-                            Isbn = "9780451524935",
-                            NumberOfPages = 328,
-                            PublicationYear = "1949",
-                            PublishingHouse = "Secker & Warburg",
-                            Title = "1984",
-                            UpdatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 724, DateTimeKind.Local).AddTicks(3720),
-                            UserId = new Guid("4cccf9b3-459a-4d06-95c5-222e0451ca3a")
-                        },
-                        new
-                        {
-                            Id = new Guid("677f3612-b16f-46ca-abb0-c832657c6f45"),
-                            AlreadyRead = true,
-                            Author = "Harper Lee",
-                            BookCoverLink = "https://example.com/to-kill-a-mockingbird.jpg",
-                            CreatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 724, DateTimeKind.Local).AddTicks(3720),
-                            Genre = "Classic",
-                            Isbn = "9780061120084",
-                            NumberOfPages = 281,
-                            PublicationYear = "1960",
-                            PublishingHouse = "J.B. Lippincott & Co.",
-                            Title = "To Kill a Mockingbird",
-                            UpdatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 724, DateTimeKind.Local).AddTicks(3720),
-                            UserId = new Guid("4cccf9b3-459a-4d06-95c5-222e0451ca3a")
-                        });
                 });
 
             modelBuilder.Entity("LectorNet.Domain.Models.Challenges.Challenge", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("EstimatedEndDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Goal")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumberOfPages")
                         .HasColumnType("int");
@@ -200,10 +150,10 @@ namespace LectorNet.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -217,13 +167,13 @@ namespace LectorNet.Infrastructure.Migrations
             modelBuilder.Entity("LectorNet.Domain.Models.Invitations.Invitation", b =>
                 {
                     b.Property<Guid>("SenderId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReceiverId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -243,23 +193,23 @@ namespace LectorNet.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ReceiverId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SenderId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -273,17 +223,17 @@ namespace LectorNet.Infrastructure.Migrations
             modelBuilder.Entity("LectorNet.Domain.Models.Summaries.Summary", b =>
                 {
                     b.Property<Guid>("AuthorId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Vote")
                         .HasColumnType("int");
@@ -299,71 +249,58 @@ namespace LectorNet.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ReadingStatistics")
                         .HasColumnType("int");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("4cccf9b3-459a-4d06-95c5-222e0451ca3a"),
-                            CreatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 963, DateTimeKind.Local).AddTicks(3650),
-                            Email = "john.doe@example.com",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            Password = "$2a$11$e1CzJ.x1lFAiPLS2vEp7w.aKdrrekhR2e8f8pBAsSl5xbBtG2K1XO",
-                            Role = "RegularUser",
-                            UpdatedAt = new DateTime(2024, 12, 30, 20, 37, 14, 963, DateTimeKind.Local).AddTicks(3740)
-                        });
                 });
 
             modelBuilder.Entity("LectorNet.Domain.Models.UsersBooksReactions.UserBookReaction", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Reaction")
                         .HasColumnType("int");
@@ -378,17 +315,17 @@ namespace LectorNet.Infrastructure.Migrations
             modelBuilder.Entity("LectorNet.Domain.Models.UsersReviews.UserReview", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
