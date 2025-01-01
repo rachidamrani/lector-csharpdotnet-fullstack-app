@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/webapp-landing-page.png" alt="landing-oage" width="1000"/>
+<img src="assets/webapp-landing-page.png" alt="landing-oage" width="900"/>
 
 ### This is the source code of the LectorNet web application using .NET 9
 
