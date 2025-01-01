@@ -30,12 +30,22 @@ public class LectorNetDbContext(DbContextOptions<LectorNetDbContext> options) : 
     {
         optionsBuilder.UseSqlServer(
             """
-            Data Source=sqlserver;
+            Data Source=localhost;
             Initial Catalog=LectorNetDB;
             User Id=sa;
             Password=Pass123@@;
             TrustServerCertificate=True;
             """);
+        
+        // For docker usage 
+        // optionsBuilder.UseSqlServer(
+        //     """
+        //     Data Source=sqlserver;
+        //     Initial Catalog=LectorNetDB;
+        //     User Id=sa;
+        //     Password=Pass123@@;
+        //     TrustServerCertificate=True;
+        //     """);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
