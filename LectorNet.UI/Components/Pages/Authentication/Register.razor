@@ -10,26 +10,28 @@
 <section class="h-full mx-auto flex flex-col items-center justify-center w-80">
     <h3 class="text-3xl font-bold mb-6"> S'inscrire </h3>
     <EditForm Model="@RegisterUserModel" OnValidSubmit="HandleValideSubmit" class="w-full">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
         <div class="form-group">
-            <InputText @bind-Value="RegisterUserModel.FirstName" placeholder="Prénom" class="base-input"/>
-            <ValidationMessage For="@(() => RegisterUserModel.FirstName)" class="error-input-message"/>
+            <InputText @bind-Value="RegisterUserModel.FirstName" placeholder="Prénom" class="base-input" />
+            <ValidationMessage For="@(() => RegisterUserModel.FirstName)" class="error-input-message" />
         </div>
         <div class="form-group">
-            <InputText @bind-Value="RegisterUserModel.LastName" placeholder="Nom" class="base-input"/>
-            <ValidationMessage For="@(() => RegisterUserModel.LastName)" class="error-input-message"/>
+            <InputText @bind-Value="RegisterUserModel.LastName" placeholder="Nom" class="base-input" />
+            <ValidationMessage For="@(() => RegisterUserModel.LastName)" class="error-input-message" />
         </div>
         <div class="form-group">
-            <InputText @bind-Value="RegisterUserModel.Email" placeholder="Email" class="base-input"/>
-            <ValidationMessage For="@(() => RegisterUserModel.Email)" class="error-input-message"/>
+            <InputText @bind-Value="RegisterUserModel.Email" placeholder="Email" class="base-input" />
+            <ValidationMessage For="@(() => RegisterUserModel.Email)" class="error-input-message" />
         </div>
         <div class="form-group">
-            <InputText @bind-Value="RegisterUserModel.Password" placeholder="Mot de passe" type="password" class="base-input"/>
-            <ValidationMessage For="@(() => RegisterUserModel.Password)" class="error-input-message"/>
+            <InputText @bind-Value="RegisterUserModel.Password" placeholder="Mot de passe" type="password"
+                class="base-input" />
+            <ValidationMessage For="@(() => RegisterUserModel.Password)" class="error-input-message" />
         </div>
         <div class="form-group">
-            <InputText @bind-Value="RegisterUserModel.ConfirmPassword" placeholder="Confirmer votre mot de passe" type="password" class="base-input"/>
-            <ValidationMessage For="@(() => RegisterUserModel.ConfirmPassword)" class="error-input-message"/>
+            <InputText @bind-Value="RegisterUserModel.ConfirmPassword" placeholder="Confirmer votre mot de passe"
+                type="password" class="base-input" />
+            <ValidationMessage For="@(() => RegisterUserModel.ConfirmPassword)" class="error-input-message" />
         </div>
         <div class="self-start mb-5">
             <button class="base-button primary-color" type="submit">S'inscrire</button>
@@ -49,11 +51,15 @@
 
     private async Task HandleValideSubmit()
     {
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/auth/register", RegisterUserModel);
+        // HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/auth/register", RegisterUserModel);
+        
+        // For docker usage only
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://backend/api/auth/register",
+        RegisterUserModel);
 
         if (response.IsSuccessStatusCode)
         {
-            // TODO: if the user is registred successfully a message should pop up in the top of the page 
+            // TODO: if the user is registred successfully a message should pop up in the top of the page
         }
         else
         {

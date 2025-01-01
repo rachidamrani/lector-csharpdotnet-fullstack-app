@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <InputText @bind-Value="LoginModel.Password" placeholder="Mot de passe" type="password"
-                       class="base-input" />
+                class="base-input" />
             <ValidationMessage For="() => LoginModel.Password" class="error-input-message" />
         </div>
         <div class="self-start mb-5">
@@ -49,18 +49,20 @@
     private async Task AuthenticateAsync()
     {
         // Add a try catch and delegate this code to the AuthService
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/auth/login",
-        LoginModel);
+        // HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://localhost:5013/api/auth/login",LoginModel);
+
+        // For docker usage only
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://backend/api/auth/login", LoginModel);
 
         if (response.IsSuccessStatusCode)
         {
             var authResult = await response.Content.ReadFromJsonAsync<AuthenticationResponse>();
 
-            var claims = new List<Claim> { 
-                new Claim(ClaimTypes.NameIdentifier, authResult!.Id.ToString()), 
-                new Claim(ClaimTypes.Name, $"{authResult!.FirstName} {authResult.LastName}"), 
-                new Claim(ClaimTypes.Role, authResult.Role) 
-            };
+            var claims = new List<Claim> {
+new Claim(ClaimTypes.NameIdentifier, authResult!.Id.ToString()),
+new Claim(ClaimTypes.Name, $"{authResult!.FirstName} {authResult.LastName}"),
+new Claim(ClaimTypes.Role, authResult.Role)
+};
 
             var identity = new ClaimsIdentity(claims, AuthConstants.AuthScheme);
             var principal = new ClaimsPrincipal(identity);

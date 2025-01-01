@@ -8,7 +8,6 @@ services:
       dockerfile: Dockerfile-Backend
     ports:
       - "8080:8080"
-      - "8081:8081"
     depends_on:
       - sqlserver
     environment:
@@ -24,7 +23,6 @@ services:
       dockerfile: Dockerfile-Frontend
     ports:
       - "1234:80"
-      - "4321:443"
     depends_on:
       - backend
       - sqlserver
