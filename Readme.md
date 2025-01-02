@@ -7,6 +7,8 @@
 </div>
 
 - [Overview](#overview)
+  - [Project presentation](#project-presentation)
+  - [Main features](#main-features)
 - [Backend Architecture](#backend-architecture)
 - [Technologies](#technologies)
 - [Usage](#usage)
@@ -30,8 +32,22 @@
 
 # Overview
 
+## Project presentation
+
+The LectorNet project is a social platform designed to facilitate book exchanges among members, allowing them to share ideas, summaries, and comments. It also enables users to create reading challenges and track their reading progress.
+
 This repository contains a full-stack web application built with .NET 9 technologies. 
 The application features a Blazor Server frontend for creating dynamic user interfaces, complemented by a RESTful Web API backend that interfaces with a SQL Server database for data persistence and management.
+
+## Main features
+
+- Publish books
+- Publish book summaries
+- View summaries from other users
+- Rate read books
+- Write detailed reviews
+- Exchange books between users
+- Create reading challenges
 
 # Backend Architecture
 
