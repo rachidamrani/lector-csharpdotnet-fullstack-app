@@ -10,14 +10,21 @@
 - [Backend Architecture](#backend-architecture)
 - [Technologies](#technologies)
 - [Usage](#usage)
-  - [Create Book](#create-book)
-    - [Create Book Request](#create-book-request)
-  - [Get Book](#get-book)
-    - [Get Book Request](#get-book-request)
-  - [Update Book](#update-book)
-    - [Update Book Request](#update-book-request)
-  - [Delete Book](#delete-book)
-    - [Delete Book Request](#delete-book-request)
+- [API Definition](#api-definition)
+  - [Authentication](#authentication)
+    - [Register User](#register-user)
+      - [Register User Request](#register-user-request)
+    - [Login User](#login-user)
+      - [Login User Request](#login-user-request)
+  - [Book Crud](#book-crud)
+    - [Create Book](#create-book)
+      - [Create Book Request](#create-book-request)
+    - [Get Book](#get-book)
+      - [Get Book Request](#get-book-request)
+    - [Update Book](#update-book)
+      - [Update Book Request](#update-book-request)
+    - [Delete Book](#delete-book)
+      - [Delete Book Request](#delete-book-request)
 
 ---
 
@@ -65,14 +72,53 @@ Here's what each layer represents:
 3. Navigate to the root folder and run Docker Compose: `docker compose up --build`.
 4. Access the application in your browser at : http://localhost:1234.
 
-<!-- # API Definition
+# API Definition
 
-## Create Book
+## Authentication 
 
-### Create Book Request
+### Register User 
+
+#### Register User Request
 
 ```js
-POST / api/books/new;
+POST /api/auth/register;
+```
+
+```json
+{
+    "firstname" : "John",
+    "lastname" : "Doe",
+    "email" : "johndoe@gmail.com",
+    "password" : "Pass123@@"
+}
+```
+
+### Login User 
+
+#### Login User Request
+
+```js
+POST /api/auth/login;
+```
+
+```json
+{
+    "email" : "johndoe@gmail.com",
+    "password" : "Pass123@@"
+}
+```
+
+Before creating, updating, or deleting a book, ensure you have created a user. 
+The book operations require a request header named 'X-User-Id' containing the corresponding user ID.
+
+## Book Crud
+
+### Create Book
+
+#### Create Book Request
+
+```js
+POST /api/books/new;
 ```
 
 ```json
@@ -89,17 +135,17 @@ POST / api/books/new;
 }
 ```
 
-## Get Book
+### Get Book
 
-### Get Book Request
+#### Get Book Request
 
 ```js
 GET /api/books/{bookId}
 ```
 
-## Update Book
+### Update Book
 
-### Update Book Request
+#### Update Book Request
 
 ```js
 PUT /api/books/{bookId}
@@ -119,9 +165,9 @@ PUT /api/books/{bookId}
 }
 ```
 
-## Delete Book
+### Delete Book
 
-### Delete Book Request
+#### Delete Book Request
 
 ```js
 DELETE /api/books/{bookId}
