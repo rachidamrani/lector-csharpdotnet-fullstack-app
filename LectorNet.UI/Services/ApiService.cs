@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using LectorNet.UI.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace LectorNet.UI.Services;
@@ -16,6 +17,14 @@ public class ApiService(HttpClient httpClient, AuthenticationStateProvider authP
         var user = state.User;
 
         return user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    }
+
+    public async Task<string?> GetUserName()
+    {
+        var state = await authProvider.GetAuthenticationStateAsync();
+        var user = state.User;
+        
+        return user?.FindFirst(ClaimTypes.Name)?.Value;
     }
 
     public async Task AddUserIdToRequestHeaders()

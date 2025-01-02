@@ -1,4 +1,4 @@
-namespace LectorNet.UI.Services;
+namespace LectorNet.UI.Services.Interfaces;
 
 public interface IApiService
 {

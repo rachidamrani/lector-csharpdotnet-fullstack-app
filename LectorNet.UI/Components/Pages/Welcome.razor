@@ -1,18 +1,27 @@
 @page "/welcome"
 
+@using LectorNet.UI.Services
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 
+@inject ApiService ApiService
 
 @attribute [Authorize]
 
 <AuthorizeView>
     <Authorized>
-        <h3 class="text-3xl">Bonjour User !</h3>
+        <h3 class="text-3xl">Bonjour @_user !</h3>
     </Authorized>
 </AuthorizeView>
 
 
 @code {
     
+    private string? _user = String.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await ApiService.GetAuthState();
+    }
+
 }
