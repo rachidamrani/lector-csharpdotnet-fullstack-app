@@ -30,7 +30,7 @@
 
 # Overview
 
-This repository contains a full-stack web application built with .NET 8 technologies. 
+This repository contains a full-stack web application built with .NET 9 technologies. 
 The application features a Blazor Server frontend for creating dynamic user interfaces, complemented by a RESTful Web API backend that interfaces with a SQL Server database for data persistence and management.
 
 # Backend Architecture
