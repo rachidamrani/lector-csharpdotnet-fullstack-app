@@ -10,23 +10,14 @@
 - [Backend Architecture](#backend-architecture)
 - [Technologies](#technologies)
 - [Usage](#usage)
-- [API Definition](#api-definition)
   - [Create Book](#create-book)
     - [Create Book Request](#create-book-request)
-    - [Create Book Response](#create-book-response)
   - [Get Book](#get-book)
     - [Get Book Request](#get-book-request)
-    - [Get Book Response](#get-book-response)
   - [Update Book](#update-book)
     - [Update Book Request](#update-book-request)
-    - [Update Book Response](#update-book-response)
   - [Delete Book](#delete-book)
     - [Delete Book Request](#delete-book-request)
-    - [Delete Book Response](#delete-book-response)
-- [Credits](#credits)
-- [VSCode Extensions](#vscode-extensions)
-- [Disclaimer](#disclaimer)
-- [License](#license)
 
 ---
 
@@ -72,7 +63,7 @@ Here's what each layer represents:
 1. Clone the repository: `git clone https://github.com/rachidamrani/lector-csharpdotnet-fullstack-app.git`. 
 2. Make sure you have Docker installed on your machine.
 3. Navigate to the root folder and run Docker Compose: `docker compose up --build`.
-4. Access the application in your browser at : http://localhost:5001.
+4. Access the application in your browser at : http://localhost:1234.
 
 <!-- # API Definition
 
@@ -81,40 +72,20 @@ Here's what each layer represents:
 ### Create Book Request
 
 ```js
-POST / breakfasts;
+POST / api/books/new;
 ```
 
 ```json
 {
-  "name": "Vegan Sunshine",
-  "description": "Vegan everything! Join us for a healthy breakfast..",
-  "startDateTime": "2022-04-08T08:00:00",
-  "endDateTime": "2022-04-08T11:00:00",
-  "savory": ["Oatmeal", "Avocado Toast", "Omelette", "Salad"],
-  "Sweet": ["Cookie"]
-}
-```
-
-### Create Book Response
-
-```js
-201 Created
-```
-
-```yml
-Location: {{host}}/Books/{{id}}
-```
-
-```json
-{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "name": "Vegan Sunshine",
-  "description": "Vegan everything! Join us for a healthy breakfast..",
-  "startDateTime": "2022-04-08T08:00:00",
-  "endDateTime": "2022-04-08T11:00:00",
-  "lastModifiedDateTime": "2022-04-06T12:00:00",
-  "savory": ["Oatmeal", "Avocado Toast", "Omelette", "Salad"],
-  "Sweet": ["Cookie"]
+    "title": "C# in Depth",
+    "author": "John Skeet",
+    "isbn": "1617294535",
+    "genre": "Informatique",
+    "publicationYear": "2019",
+    "publishingHouse": "Manning",
+    "bookCoverLink": "bookCoverLink",
+    "numberOfPages" : 200,
+    "alreadyRead" : false
 }
 ```
 
@@ -123,26 +94,7 @@ Location: {{host}}/Books/{{id}}
 ### Get Book Request
 
 ```js
-GET /breakfasts/{{id}}
-```
-
-### Get Book Response
-
-```js
-200 Ok
-```
-
-```json
-{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "name": "Vegan Sunshine",
-  "description": "Vegan everything! Join us for a healthy breakfast..",
-  "startDateTime": "2022-04-08T08:00:00",
-  "endDateTime": "2022-04-08T11:00:00",
-  "lastModifiedDateTime": "2022-04-06T12:00:00",
-  "savory": ["Oatmeal", "Avocado Toast", "Omelette", "Salad"],
-  "Sweet": ["Cookie"]
-}
+GET /api/books/{bookId}
 ```
 
 ## Update Book
@@ -150,34 +102,21 @@ GET /breakfasts/{{id}}
 ### Update Book Request
 
 ```js
-PUT /breakfasts/{{id}}
+PUT /api/books/{bookId}
 ```
 
 ```json
 {
-  "name": "Vegan Sunshine",
-  "description": "Vegan everything! Join us for a healthy breakfast..",
-  "startDateTime": "2022-04-08T08:00:00",
-  "endDateTime": "2022-04-08T11:00:00",
-  "savory": ["Oatmeal", "Avocado Toast", "Omelette", "Salad"],
-  "Sweet": ["Cookie"]
+    "id": "ba16edba-fc7b-4ccf-84a7-ad8dfe480ec5",
+    "title": "C# in depth",
+    "author": "John Skeet",
+    "isbn": "9781617294532",
+    "genre": "Informatique",
+    "publicationYear": "2020",
+    "publishingHouse": "Manning",
+    "numberOfPages": 528,
+    "alreadyRead": true
 }
-```
-
-### Update Book Response
-
-```js
-204 No Content
-```
-
-or
-
-```js
-201 Created
-```
-
-```yml
-Location: {{host}}/Books/{{id}}
 ```
 
 ## Delete Book
@@ -185,11 +124,5 @@ Location: {{host}}/Books/{{id}}
 ### Delete Book Request
 
 ```js
-DELETE /breakfasts/{{id}}
+DELETE /api/books/{bookId}
 ```
-
-### Delete Book Response
-
-```js
-204 No Content
-``` -->

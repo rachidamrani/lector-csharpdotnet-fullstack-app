@@ -1,7 +1,7 @@
 using LectorNet.Domain.Models.Common;
 using LectorNet.Domain.Models.Users;
 
-namespace LectorNet.Domain.Models;
+namespace LectorNet.Domain.Models.Messages;
 
 public class Message : BaseEntity
 {
@@ -10,5 +10,5 @@ public class Message : BaseEntity
     public Guid ReceiverId { get; init; }
     public User? Receiver { get; init; }
     
-    public string Text { get; init; } = default!;
+    public string Text { get; init; } = string.Empty;
 }

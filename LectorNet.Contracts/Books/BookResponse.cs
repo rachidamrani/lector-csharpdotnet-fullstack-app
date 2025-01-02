@@ -1,5 +1,3 @@
-using LectorNet.Domain.Models.Books;
-
 namespace LectorNet.Contracts.Books;
 
 public record BookResponse(

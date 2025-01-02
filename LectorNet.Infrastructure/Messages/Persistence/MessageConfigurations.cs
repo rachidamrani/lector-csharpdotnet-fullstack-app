@@ -1,4 +1,5 @@
 using LectorNet.Domain.Models;
+using LectorNet.Domain.Models.Messages;
 using LectorNet.Infrastructure.Common.ValueGenerators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

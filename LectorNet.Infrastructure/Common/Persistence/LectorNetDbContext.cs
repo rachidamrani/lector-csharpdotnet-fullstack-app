@@ -6,6 +6,7 @@ using LectorNet.Domain.Models.Books;
 using LectorNet.Domain.Models.Challenges;
 using LectorNet.Domain.Models.Common;
 using LectorNet.Domain.Models.Invitations;
+using LectorNet.Domain.Models.Messages;
 using LectorNet.Domain.Models.Summaries;
 using LectorNet.Domain.Models.Users;
 using LectorNet.Domain.Models.UsersBooksReactions;
