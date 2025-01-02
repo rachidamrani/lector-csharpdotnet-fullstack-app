@@ -33,7 +33,7 @@ services:
 
   sqlserver: # SQL database service
     container_name: sqlserver-container
-    image: mcr.microsoft.com/azure-sql-edge:latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Pass123@@"
