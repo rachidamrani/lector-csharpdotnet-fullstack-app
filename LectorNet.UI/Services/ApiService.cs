@@ -48,4 +48,9 @@ public class ApiService(HttpClient httpClient, AuthenticationStateProvider authP
         await AddUserIdToRequestHeaders();
         return await httpClient.GetAsync($"{ApiUrl}{endPoint}");
     }
+
+    public async Task<HttpResponseMessage> DeleteAsync<T>(string endPoint, T content)
+    {
+        throw new NotImplementedException();
+    }
 }
