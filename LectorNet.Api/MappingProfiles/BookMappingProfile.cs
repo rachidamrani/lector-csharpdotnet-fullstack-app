@@ -2,7 +2,7 @@ using LectorNet.Contracts.Books;
 using LectorNet.Domain.Models.Books;
 using Mapster;
 
-namespace LectorNet.Api.MappingsProfiles;
+namespace LectorNet.Api.MappingProfiles;
 
 public class BookMappingProfile : IRegister
 {
