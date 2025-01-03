@@ -26,5 +26,5 @@ public class BookGenre(string name, int value) : SmartEnum<BookGenre>(name, valu
     public static readonly BookGenre Politics = new BookGenre("Politique", 21);
     public static readonly BookGenre Dystopian = new BookGenre("Dystopian", 22);
     public static readonly BookGenre Classic = new BookGenre("Classic", 23);
-    public static readonly BookGenre None = new BookGenre("None", 23);
+    public static readonly BookGenre None = new BookGenre("Non catégorisé", 23);
 }
