@@ -48,10 +48,10 @@
 
     private async Task AuthenticateAsync()
     {
-        HttpResponseMessage response = await AuthService.Login(LoginUserModel);
+        // HttpResponseMessage response = await AuthService.Login(LoginUserModel);
 
         // For docker usage only
-        // HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://backend/api/auth/login", LoginModel);
+        HttpResponseMessage response = await AuthService.Login(LoginUserModel);
 
         if (response.IsSuccessStatusCode)
         {

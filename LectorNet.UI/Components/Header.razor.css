@@ -6,6 +6,14 @@
     
     .menu_element {
         display: flex;
+        font-weight: bolder;
+        font-size: 1.25rem;
+        transition: transform 0.3s ease;
+       
+        &:hover {
+            color: #17B169;
+            transform: scale(1.1);
+        }
         
         img {
             margin-right: .2rem;

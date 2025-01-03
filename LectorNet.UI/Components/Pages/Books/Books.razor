@@ -1,10 +1,34 @@
 @page "/mybooks"
+@using LectorNet.Contracts.Books
+@using LectorNet.UI.Services
 @using Microsoft.AspNetCore.Authorization
+
+@inject ApiService ApiService
+@inject ILogger<Books> Logger;
+
 
 @attribute [Authorize]
 
 <h3>Books</h3>
 
 @code {
+
+    List<Books> _booksList = new();
     
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Logger.LogInformation("Fetching books");
+            
+            var responseMessage = await ApiService.GetAsync("books");
+
+            var books = await responseMessage.Content.ReadFromJsonAsync<List<BookResponse>>();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError("Error fetching books ! {Error}", e.Message);
+        }
+    }
+
 }

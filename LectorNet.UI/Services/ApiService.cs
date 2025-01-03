@@ -6,7 +6,7 @@ namespace LectorNet.UI.Services;
 
 public class ApiService(HttpClient httpClient, AuthenticationStateProvider authProvider) : IApiService
 {
-    //private const string ApiUrl = "http://localhost:5013/api/";
+    // private const string ApiUrl = "http://localhost:5013/api/";
 
     // For docker usage only
     private const string ApiUrl = "http://backend:8080/api/";
@@ -41,5 +41,11 @@ public class ApiService(HttpClient httpClient, AuthenticationStateProvider authP
     {
         await AddUserIdToRequestHeaders();
         return await httpClient.PostAsJsonAsync($"{ApiUrl}{endPoint}", content);
+    }
+
+    public async Task<HttpResponseMessage> GetAsync(string endPoint)
+    {
+        await AddUserIdToRequestHeaders();
+        return await httpClient.GetAsync($"{ApiUrl}{endPoint}");
     }
 }

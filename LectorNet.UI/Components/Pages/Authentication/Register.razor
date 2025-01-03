@@ -52,10 +52,10 @@
 
     private async Task HandleValideSubmit()
     {
-        HttpResponseMessage response = await AuthService.Register(_registerUserModel);
+        // HttpResponseMessage response = await AuthService.Register(_registerUserModel);
         
         // For docker usage only
-        // HttpResponseMessage response = await HttpClient.PostAsJsonAsync("http://backend/api/auth/register", RegisterUserModel);
+        HttpResponseMessage response = await AuthService.Register(_registerUserModel);
 
         if (response.IsSuccessStatusCode)
         {
