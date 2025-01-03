@@ -4,4 +4,4 @@ using MediatR;
 
 namespace LectorNet.Application.Books.Queries.GetBooks;
 
-public record GetBooksQuery() : IRequest<ErrorOr<List<Book>>>;
+public record GetBooksQuery(string UserId) : IRequest<ErrorOr<List<Book>>>;

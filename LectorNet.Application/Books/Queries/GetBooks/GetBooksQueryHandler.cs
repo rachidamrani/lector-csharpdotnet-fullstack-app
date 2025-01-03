@@ -10,13 +10,13 @@ public class GetBooksQueryHandler(
     IBooksRepository booksRepository,
     ILogger<GetBooksQueryHandler> logger) : IRequestHandler<GetBooksQuery, ErrorOr<List<Book>>>
 {
-    public async Task<ErrorOr<List<Book>>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<List<Book>>> Handle(GetBooksQuery query, CancellationToken cancellationToken)
     {
         try
         {
             logger.LogInformation("Getting all books");
             
-            var books = await booksRepository.GetAllAsync();
+            var books = await booksRepository.GetAllAsync(Guid.Parse(query.UserId));
 
             return books;
         }

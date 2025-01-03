@@ -12,7 +12,6 @@ public record BookResponse(
     string PublishingHouse,
     string BookCoverLink,
     int NumberOfPages,
-    Guid UserId,
     UserInfoResponse UserInfos,
     bool AlreadyRead);
     

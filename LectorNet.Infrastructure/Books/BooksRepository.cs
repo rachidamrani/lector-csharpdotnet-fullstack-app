@@ -14,9 +14,10 @@ public class BooksRepository(LectorNetDbContext dbContext) : IBooksRepository
             .FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public async Task<List<Book>> GetAllAsync()
+    public async Task<List<Book>> GetAllAsync(Guid? userId = null)
     {
         return await dbContext.Books
+            .Where(book => book.UserId == userId)
             .Include(book => book.User)
             .ToListAsync();
     }
