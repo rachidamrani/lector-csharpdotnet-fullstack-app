@@ -8,7 +8,7 @@ namespace LectorNet.UI.Services;
 
 public class AuthService(HttpClient httpClient) : IAuthService
 {
-    // private const string ApiUrl = "http://localhost:5013/api/auth";
+    // sprivate const string ApiUrl = "http://localhost:5013/api/auth";
     
     // For docker usage only 
     private const string ApiUrl = "http://backend:8080/api/auth";
