@@ -2,18 +2,52 @@
 @using LectorNet.Contracts.Books
 @using LectorNet.UI.Services
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.QuickGrid;
 
 @inject ApiService ApiService
 @inject ILogger<Books> Logger;
 
-
 @attribute [Authorize]
 
-<h3>Books</h3>
+<h2>Books</h2>
+
+@if (_books is not null)
+{
+    <table>
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Isbn</th>
+            <th>Genre</th>
+            <th>Année de publication</th>
+            <th>Maison d'édition</th>
+            <th>Nombre de pages</th>
+            <th>Livre déja lu ?</th>
+            <th>Ajouté par</th>
+        </tr>
+        @foreach (var book in _books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Isbn</td>
+                <td>@book.Genre</td>
+                <td>@book.PublicationYear</td>
+                <td>@book.PublishingHouse</td>
+                <td>@book.NumberOfPages</td>
+                <td>@(book.AlreadyRead ? "Oui" : "Non")</td>
+                <td>@book.UserInfos.FirstName @book.UserInfos.LastName</td>
+            </tr>
+        }
+    </table>
+}
+
+
+
 
 @code {
 
-    List<Books> _booksList = new();
+    List<BookResponse>? _books = new();
     
     protected override async Task OnInitializedAsync()
     {
@@ -23,7 +57,7 @@
             
             var responseMessage = await ApiService.GetAsync("books");
 
-            var books = await responseMessage.Content.ReadFromJsonAsync<List<BookResponse>>();
+            _books = await responseMessage.Content.ReadFromJsonAsync<List<BookResponse>>();
         }
         catch (Exception e)
         {

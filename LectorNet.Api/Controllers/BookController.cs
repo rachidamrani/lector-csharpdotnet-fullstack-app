@@ -28,9 +28,12 @@ public class BookController(ISender sender) : ApiController
     }
 
     [HttpGet]
+    [RequireConnectedUser]
     public async Task<IActionResult> GetBooks()
     {
-        var query = new GetBooksQuery();
+        var connectedUserId = GetConnectedUser();
+        
+        var query = new GetBooksQuery(connectedUserId);
         
         var getBooksResult = await sender.Send(query);
 

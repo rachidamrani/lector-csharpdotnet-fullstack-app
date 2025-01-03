@@ -12,6 +12,11 @@ public class UsersRepository(LectorNetDbContext dbContext) : IUsersRepository
         throw new NotImplementedException();
     }
 
+    public async Task<List<User>> GetAllAsync(Guid? userId = null)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<User>> GetAllAsync()
     {
         throw new NotImplementedException();
