@@ -1,3 +1,5 @@
+using LectorNet.Domain.Models.Users;
+
 namespace LectorNet.Contracts.Books;
 
 public record BookResponse(
@@ -8,5 +10,10 @@ public record BookResponse(
     string Genre,
     string PublicationYear,
     string PublishingHouse,
+    string BookCoverLink,
     int NumberOfPages,
+    Guid UserId,
+    UserInfoResponse UserInfos,
     bool AlreadyRead);
+    
+public record UserInfoResponse(string FirstName, string LastName);

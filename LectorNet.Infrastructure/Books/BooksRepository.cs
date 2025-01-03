@@ -9,12 +9,16 @@ public class BooksRepository(LectorNetDbContext dbContext) : IBooksRepository
 {
     public async Task<Book?> GetByIdAsync(Guid id)
     {
-        return await dbContext.Books.FirstOrDefaultAsync(b => b.Id == id);
+        return await dbContext.Books
+            .Include(book => book.User)
+            .FirstOrDefaultAsync(b => b.Id == id);
     }
 
     public async Task<List<Book>> GetAllAsync()
     {
-        return await dbContext.Books.ToListAsync();
+        return await dbContext.Books
+            .Include(book => book.User)
+            .ToListAsync();
     }
 
     public async Task AddAsync(Book book)

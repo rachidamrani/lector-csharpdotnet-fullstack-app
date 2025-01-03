@@ -1,3 +1,5 @@
+using LectorNet.Api.MappingsProfiles;
+
 namespace LectorNet.Api;
 
 public static class DependencyInjection
@@ -8,6 +10,7 @@ public static class DependencyInjection
         services.AddOpenApi();
         services.AddProblemDetails();
         services.AddHttpContextAccessor(); 
+        services.AddMappings();
         
         return services;
     }

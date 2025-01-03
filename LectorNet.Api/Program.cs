@@ -1,7 +1,9 @@
 using LectorNet.Api;
+using LectorNet.Api.MappingsProfiles;
 using LectorNet.Application;
 using LectorNet.Infrastructure;
 using LectorNet.Infrastructure.Common.Persistence;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services
     .AddPresentation()
     .AddApplication()
     .AddInfrastructure();
+    
 
 var app = builder.Build();
 
