@@ -10,8 +10,9 @@ public class RequireConnectedUserAttribute : Attribute, IAsyncActionFilter
     {
         var headers = context.HttpContext.Request.Headers;
 
-        if (!headers.TryGetValue("X-User-Id", out var userId) || 
-            string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out _))
+        var userIdFromHeaders = headers.TryGetValue("X-User-Id", out var userId);
+
+        if (!userIdFromHeaders || string.IsNullOrEmpty(userId) || !IsValidGuid(userId!))
         {
             context.Result = new UnauthorizedObjectResult(new
             {
