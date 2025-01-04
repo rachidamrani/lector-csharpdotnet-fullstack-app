@@ -14,7 +14,7 @@ public class PasswordHasher : IPasswordHasher
     public ErrorOr<string> HashPassword(string password)
     {
         return !_passwordRegex.IsMatch(password)
-            ? Error.Validation(description: "“Mot de passe faible !”")
+            ? Error.Validation(description: "Mot de passe faible !")
             : BCrypt.Net.BCrypt.EnhancedHashPassword(password);
     }
 
