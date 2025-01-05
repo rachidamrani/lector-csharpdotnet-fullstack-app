@@ -2,13 +2,14 @@ using ErrorOr;
 using FluentAssertions;
 using LectorNet.Application.Authentication.Commands;
 using LectorNet.Application.Authentication.Common;
+using LectorNet.Application.Common;
 using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
 using LectorNet.Domain.Models.Users;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace LectorNet.Unit.Tests;
+namespace LectorNet.Unit.Tests.Authentication;
 
 public class RegisterCommandHandlerTests
 {
@@ -29,7 +30,7 @@ public class RegisterCommandHandlerTests
 
 
     [Fact]
-    public async Task Handle_ShouldReturnRegisteredUser_WhenAllUsersInformationsProvidedAreValid()
+    public async Task Handle_ShouldReturnRegisteredUser_WhenAllUsersInformationsProvidedAreValidAndUserDoesNotExist()
     {
         // Arrange
         // All user's infos are valid
@@ -84,5 +85,22 @@ public class RegisterCommandHandlerTests
 
         // Assert
         result.FirstError.Should().Be(AuthenticationErrors.UserAlreadyExists);
+    }
+
+    [Fact]
+    public async Task Handle_ShouldReturnUnexpectedError_WhenRegistringUserFails()
+    {
+        // Arrange
+        var command = new RegisterCommand("John","Doe", "johnedoe@example.com", "Pass123@@");
+        _usersRepository.ExistByEmailAsync(command.Email).Returns(false);
+        
+        _usersRepository.AddAsync(Arg.Any<User>())
+            .Returns(Task.FromException(new Exception()));
+        
+        // Act
+        var result = (await _sut.Handle(command, CancellationToken.None)).FirstError;
+        
+        // Assert
+        result.Should().Be(Errors.UnexpectedError);
     }
 }
