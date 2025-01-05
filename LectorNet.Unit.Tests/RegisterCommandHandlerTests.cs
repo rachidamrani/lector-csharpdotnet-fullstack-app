@@ -12,7 +12,7 @@ namespace LectorNet.Unit.Tests;
 
 public class RegisterCommandHandlerTests
 {
-    private readonly RegisterCommandHandler _registerCommandHandler;
+    private readonly RegisterCommandHandler _sut;
     private readonly IUsersRepository _usersRepository = Substitute.For<IUsersRepository>();
     private readonly IPasswordHasher _passwordHasher = Substitute.For<IPasswordHasher>();
     private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
@@ -20,7 +20,7 @@ public class RegisterCommandHandlerTests
     
     public RegisterCommandHandlerTests()
     { 
-        _registerCommandHandler = new RegisterCommandHandler(
+        _sut = new RegisterCommandHandler(
             _passwordHasher, 
             _unitOfWork, 
             _usersRepository, 
@@ -32,23 +32,23 @@ public class RegisterCommandHandlerTests
     public async Task Handle_ShouldReturnRegisteredUser_WhenAllUsersInformationsProvidedAreValid()
     {
         // Arrange
-        
-        var command = new RegisterCommand("John","Doe", "johnedoe@example.com", "Pass123@@"); // All user's infos are valid
-        var hashedPassword = _passwordHasher.HashPassword(command.Password).Value;
+        // All user's infos are valid
+        var command = new RegisterCommand("John","Doe", "johnedoe@example.com", "Pass123@@"); 
+        var hashedPassword = _passwordHasher.HashPassword(command.Password);
         
         var user = new User
         {
             FirstName = command.FirstName, 
             LastName = command.LastName, 
             Email = command.Email, 
-            Password = hashedPassword
+            Password = hashedPassword.Value
         };
 
         _usersRepository.AddAsync(user).Returns(Task.CompletedTask);
         _usersRepository.ExistByEmailAsync(command.Email).Returns(false);
         
         // Act
-        var result = (await _registerCommandHandler.Handle(command, CancellationToken.None)).Value;
+        var result = (await _sut.Handle(command, CancellationToken.None)).Value;
 
         // Assert
         result.Should().BeEquivalentTo(new AuthenticationResult(user));
@@ -56,15 +56,16 @@ public class RegisterCommandHandlerTests
     
     
     [Fact]
-    public async Task Handle_ShouldReturnRegisteredUser_WhenAllUsersInformationsProvidedWithWeakPassword()
+    public async Task Handle_ShouldNotRegisterUser_WhenUsersInformationsProvidedWithWeakPassword()
     {
         // Arrange
         var command = new RegisterCommand("John","Doe", "johnedoe@example.com", "weakpass");
         _usersRepository.ExistByEmailAsync(command.Email).Returns(false);
-        _passwordHasher.HashPassword(command.Password).Returns(Error.Validation(description: "Mot de passe faible !"));
+        _passwordHasher.HashPassword(command.Password)
+            .Returns(Error.Validation(description: "Mot de passe faible !"));
         
         // Act
-        var result = await _registerCommandHandler.Handle(command, CancellationToken.None);
+        var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
         result.FirstError.Should().Be(Error.Validation(description: "Mot de passe faible !"));
@@ -79,7 +80,7 @@ public class RegisterCommandHandlerTests
         _usersRepository.ExistByEmailAsync(command.Email).Returns(true);
         
         // Act
-        var result = await _registerCommandHandler.Handle(command, CancellationToken.None);
+        var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
         result.FirstError.Should().Be(AuthenticationErrors.UserAlreadyExists);
