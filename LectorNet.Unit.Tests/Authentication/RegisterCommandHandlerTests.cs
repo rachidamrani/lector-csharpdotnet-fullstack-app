@@ -27,8 +27,7 @@ public class RegisterCommandHandlerTests
             _usersRepository, 
             _logger);
     }
-
-
+    
     [Fact]
     public async Task Handle_ShouldReturnRegisteredUser_WhenAllUsersInformationsProvidedAreValidAndUserDoesNotExist()
     {
@@ -55,7 +54,6 @@ public class RegisterCommandHandlerTests
         result.Should().BeEquivalentTo(new AuthenticationResult(user));
     }
     
-    
     [Fact]
     public async Task Handle_ShouldNotRegisterUser_WhenUsersInformationsProvidedWithWeakPassword()
     {
@@ -71,7 +69,6 @@ public class RegisterCommandHandlerTests
         // Assert
         result.FirstError.Should().Be(Error.Validation(description: "Mot de passe faible !"));
     }
-    
     
     [Fact]
     public async Task Handle_ShouldReturnUserAlreadyExistsError_WhenUserAlreadyExists()

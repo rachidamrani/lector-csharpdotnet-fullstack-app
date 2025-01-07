@@ -144,6 +144,5 @@ public class CreateBookHandlerTests
         
         // Assert
         result.Should().Be(Errors.UnexpectedError);
-
     }
 }
