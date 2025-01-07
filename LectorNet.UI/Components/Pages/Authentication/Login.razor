@@ -1,72 +1,106 @@
 @page "/auth/login"
 
-@using LectorNet.Contracts.Authentication
+@using System.Text
 @using LectorNet.UI.Common
-@using LectorNet.UI.Services
+@using LectorNet.UI.Common.HttpResponseModels
 @using LectorNet.UI.ViewModels
-@using Microsoft.AspNetCore.Authentication
 
-@inject AuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IHttpClientFactory ClientFactory
 
-
+@rendermode InteractiveServer
 
 <section class="h-full mx-auto flex flex-col items-center justify-center w-80">
-    <h3 class="text-3xl font-bold mb-6"> Se connecter </h3>
-    <EditForm Model="LoginUserModel" FormName="@FormName" method="post" OnValidSubmit="AuthenticateAsync" class="w-full">
-        <DataAnnotationsValidator />
-        <div class="form-group">
-            <InputText @bind-Value="LoginUserModel.Email" placeholder="Email" class="base-input" />
-            <ValidationMessage For="() => LoginUserModel.Email" class="error-input-message" />
-        </div>
-        <div class="form-group">
-            <InputText @bind-Value="LoginUserModel.Password" placeholder="Mot de passe" type="password"
-                class="base-input" />
-            <ValidationMessage For="() => LoginUserModel.Password" class="error-input-message" />
-        </div>
-        <div class="self-start mb-5">
-            <button class="base-button primary-color" type="submit">Se connecter</button>
-        </div>
-        <div class="form-group self-start">
-            <span class="text-xs block">Vous n'avez pas un compte ?
-                <a href="/auth/register" class="text-green-700">Créer un compte</a>
-            </span>
-        </div>
-    </EditForm>
+    @if (IsLoading)
+    {
+        <LoadingSpinner/>
+    }
+    else
+    {
+        if (AlertIsOpen)
+        {
+            <Alert 
+                Title="Connexion Echouée !"
+                Message="@ErrorMessage"
+                CloseAlertCallBack="CloseAlert"
+                IsSuccess=false/>
+        }
+        
+        <h3 class="text-3xl font-bold mb-6"> Se connecter</h3>
+        <EditForm Model="LoginUserModel" class="w-full">
+            <DataAnnotationsValidator/>
+            <div class="form-group">
+                <InputText @bind-Value="LoginUserModel.Email" placeholder="Email" class="base-input"/>
+                <ValidationMessage For="() => LoginUserModel.Email" class="error-input-message"/>
+            </div>
+            <div class="form-group">
+                <InputText @bind-Value="LoginUserModel.Password" placeholder="Mot de passe" type="password"
+                           class="base-input"/>
+                <ValidationMessage For="() => LoginUserModel.Password" class="error-input-message"/>
+            </div>
+            <div class="self-start mb-5">
+                <button class="base-button primary-color" @onclick="AuthenticateAsync">Se connecter</button>
+            </div>
+            <div class="form-group self-start">
+                <span class="text-xs block">Vous n'avez pas un compte ?
+                    <a href="/auth/register" class="text-green-700">Créer un compte</a>
+                </span>
+            </div>
+        </EditForm>
+    }
 </section>
 
 @code {
-
-    private const string FormName = "LoginForm";
 
     [CascadingParameter] public HttpContext HttpContext { get; set; } = null!;
 
     [SupplyParameterFromForm]
     private LoginUserModel LoginUserModel { get; set; } = new();
+    
+    private bool IsLoading { get; set; }
+    
+    private bool AlertIsOpen { get; set;  }
 
-    private ErrorResponse? _errorResponse;
+    private string? ErrorMessage { get; set; }
 
     private async Task AuthenticateAsync()
     {
-        HttpResponseMessage response = await AuthService.Login(LoginUserModel);
+        AlertIsOpen = false;
+        IsLoading = true;
+        ErrorMessage = "";
 
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var authResult = await response.Content.ReadFromJsonAsync<AuthenticationResponse>();
+            var client = ClientFactory.CreateClient("lectorNetApi");
 
-            if (authResult != null)
+            var response = await client.PostAsJsonAsync("auth/login", LoginUserModel);
+
+            if (response.IsSuccessStatusCode)
             {
-                var principal = AuthService.UserToClaims(authResult);
-
-                await HttpContext.SignInAsync(AuthConstants.AuthScheme, principal);
+                NavigationManager.NavigateTo("/");
             }
-
-            NavigationManager.NavigateTo("/welcome");
+            else
+            {
+                AlertIsOpen = true;
+                ErrorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())!.Detail;
+            }
         }
-        else
+        catch (Exception e)
         {
-            _errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            ErrorMessage = "Une erreur est survenue !";
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
+    public void CloseAlert()
+    {
+        AlertIsOpen = false;
+        ErrorMessage = string.Empty;
+    }
 }
+
+
+

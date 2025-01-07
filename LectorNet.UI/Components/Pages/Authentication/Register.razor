@@ -1,10 +1,10 @@
 @page "/auth/register"
+
 @using LectorNet.UI.Common
-@using LectorNet.UI.Services
 @using LectorNet.UI.ViewModels
 @rendermode InteractiveServer
 
-@inject AuthService AuthService
+
 @inject NavigationManager NavigationManager
 
 
@@ -46,21 +46,10 @@
 </section>
 
 @code {
-    private readonly RegisterUserModel _registerUserModel = new();
-
-    private ErrorResponse? _errorResponse;
-
+    private readonly RegisterUserModel _registerUserModel;
+    
     private async Task HandleValideSubmit()
     {
-        HttpResponseMessage response = await AuthService.Register(_registerUserModel);
-
-        if (response.IsSuccessStatusCode)
-        {
-            NavigationManager.NavigateTo("/welcome");
-        }
-        else
-        {
-            _errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-        }
+        // TODO 
     }
 }

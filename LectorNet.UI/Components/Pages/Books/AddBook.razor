@@ -1,14 +1,9 @@
 @page "/book/new"
 
 @using LectorNet.Domain.Models.Books
-@using LectorNet.UI.Common
-@using LectorNet.UI.Services
 @using LectorNet.UI.ViewModels
 @using Microsoft.AspNetCore.Authorization
 
-@rendermode InteractiveServer
-
-@inject ApiService ApiService
 
 @attribute [Authorize]
 
@@ -80,26 +75,9 @@
     }
 </section>
 
-@if (!string.IsNullOrEmpty(_errorMessage) && _modalStatus == ModalStatus.ModalIsOpen)
-{
-    <Alert Title="Erreur !" Message="@_errorMessage" IsSuccess=@_isSuccess CloseModalCallback="CloseModal" />
-}
-
-@if (_isSuccess && _modalStatus == ModalStatus.ModalIsOpen)
-{
-    <Alert Title="Félicitations !" Message="Le livre a été bien ajouté" IsSuccess=@_isSuccess
-    CloseModalCallback="CloseModal" />
-}
-
 @code {
     private readonly AddBookModel? _addBookModel = new();
-
-    private string? _errorMessage;
-
-    private bool _isSuccess;
-
-    private ModalStatus _modalStatus = ModalStatus.ModalIsClosed;
-
+    
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
         string format = "images/png";
@@ -112,33 +90,6 @@
 
     private async Task HandleAddBook()
     {
-        var response = await ApiService.PostAsync("books/new",_addBookModel!);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            var errorResponse = (await response.Content.ReadFromJsonAsync<ErrorResponse>());
-
-            if (errorResponse?.Title == "One or more validation errors occurred.")
-            {
-                _errorMessage = "Problème de validations !";
-            }
-            else
-            {
-                _errorMessage = errorResponse?.Detail;
-            }
-    }
-        else
-        {
-            _isSuccess = true;
-        }
-
-        _modalStatus = ModalStatus.ModalIsOpen;
-    }
-
-    private void CloseModal()
-    {
-        _modalStatus = ModalStatus.ModalIsClosed;
-        _errorMessage = string.Empty;
-        _isSuccess = false;
+        // TODO : handle sending adding book request to API
     }
 }

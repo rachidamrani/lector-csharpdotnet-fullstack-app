@@ -1,9 +1,8 @@
 @page "/mybooks"
+
 @using LectorNet.Contracts.Books
-@using LectorNet.UI.Services
 @using Microsoft.AspNetCore.Authorization
 
-@inject ApiService ApiService
 @inject ILogger<Books> Logger;
 
 @rendermode InteractiveServer
@@ -62,36 +61,16 @@
     
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            Logger.LogInformation("Fetching books");
-            
-            var responseMessage = await ApiService.GetAsync("books");
-
-            _books = await responseMessage.Content.ReadFromJsonAsync<List<BookResponse>>();
-        }
-        catch (Exception e)
-        {
-            Logger.LogError("Error fetching books ! {Error}", e.Message);
-        }
     }
 
     private async Task DeleteBook(Guid id)
     {
-        try
-        {
-            Logger.LogInformation("Deleting book with ID {id}", id);
-            var response = await ApiService.DeleteAsync("books",id);
-        }
-        catch (Exception e)
-        {
-            Logger.LogError("Error deleting book with ID {id} : {ErrorMessage}", id, e.Message);
-        }
+        // TODO
     }
 
     private void UpdateBook()
     {
-        Console.WriteLine("Update!");
+        // TODO
     }
 
 }

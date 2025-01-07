@@ -4,9 +4,10 @@ namespace LectorNet.UI.ViewModels;
 
 public class LoginUserModel
 {
-    [Required] [EmailAddress] public string Email { get; set; } = null!;
+    [Required(ErrorMessage = "L'adresse e-mail est requise")] 
+    [EmailAddress] public string Email { get; set; } = null!;
 
-    [Required]
+    [Required(ErrorMessage = "Le mot de passe est requis")]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
 }

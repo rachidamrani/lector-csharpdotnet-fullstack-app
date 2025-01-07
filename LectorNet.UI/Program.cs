@@ -1,7 +1,5 @@
 using LectorNet.UI.Authentication;
 using LectorNet.UI.Components;
-using LectorNet.UI.Services;
-using LectorNet.UI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,18 +12,10 @@ builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddBlazorAppAuthentication();
 
-builder.Services.AddHttpClient();
-
-builder.Services.AddScoped<ApiService>();
-builder.Services.AddScoped<AuthService>();
-
-// builder.Services.AddAuthorizationCore(options =>
-// {
-//     options.AddPolicy("NotAuthenticated", policy =>
-//     {
-//         policy.RequireAssertion(context => !context.User.Identity!.IsAuthenticated);
-//     });
-// });
+builder.Services.AddHttpClient("lectorNetApi", configureClient =>
+{
+    configureClient.BaseAddress = new Uri(builder.Configuration.GetValue<string>("LectorNetApi:BaseAddress")!);
+});
 
 var app = builder.Build();
 
@@ -38,7 +28,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAuthentication();
 
