@@ -50,6 +50,6 @@ public class PasswordValidationAttribute : ValidationAttribute
     // Custom error message
     public override string FormatErrorMessage(string name)
     {
-        return $"Le {name} doit contenir au moins 8 caractères, inclure une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.";
+        return $"Le mot de passe doit contenir au moins 8 caractères, inclure une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.";
     }
 }
