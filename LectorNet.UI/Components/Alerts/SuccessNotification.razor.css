@@ -1,0 +1,23 @@
+.alert-success {
+    display: flex;
+    flex-direction: column;
+    
+    width: 500px;
+    background-color: color-mix(in srgb, var(--primary) 10%, white);
+    border: 1px solid #D3D3D3;
+    border-radius: .25rem;
+    padding: 1rem;
+    
+    h3 {
+        font-weight: bold;
+        margin-bottom: .5rem;
+    }
+    
+    .login-link {
+        margin-top: .25rem;
+        color: var(--primary);
+        font-weight: bold;
+        display: inline-block;
+        align-self: flex-end;
+    }
+}

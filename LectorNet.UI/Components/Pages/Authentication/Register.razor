@@ -1,38 +1,52 @@
 @page "/auth/register"
 
-@using LectorNet.UI.Common
+@using LectorNet.Contracts.Authentication
+@using LectorNet.UI.Common.HttpResponseModels
 @using LectorNet.UI.ViewModels
-@rendermode InteractiveServer
-
 
 @inject NavigationManager NavigationManager
+@inject IHttpClientFactory ClientFactory
 
 
 <section class="h-full mx-auto flex flex-col items-center justify-center w-80">
+    
+    @if (RegisterIsSuccess)
+    {
+        <SuccessNotification/>
+    }
+    else
+    { 
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <ErrorAlert
+            Title="Connexion échouée !"
+            Message="@ErrorMessage"/>
+    }
+    
     <h3 class="text-3xl font-bold mb-6"> S'inscrire </h3>
-    <EditForm Model="@_registerUserModel" OnValidSubmit="HandleValideSubmit" class="w-full">
-        <DataAnnotationsValidator />
+    <EditForm Model="@RegisterUserModel" FormName="registerForm" OnValidSubmit="HandleRegister" class="w-full">
+        <DataAnnotationsValidator/>
         <div class="form-group">
-            <InputText @bind-Value="_registerUserModel.FirstName" placeholder="Prénom" class="base-input" />
-            <ValidationMessage For="@(() => _registerUserModel.FirstName)" class="error-input-message" />
+            <InputText @bind-Value="RegisterUserModel.FirstName" placeholder="Prénom" class="base-input"/>
+            <ValidationMessage For="@(() => RegisterUserModel.FirstName)" class="error-input-message"/>
         </div>
         <div class="form-group">
-            <InputText @bind-Value="_registerUserModel.LastName" placeholder="Nom" class="base-input" />
-            <ValidationMessage For="@(() => _registerUserModel.LastName)" class="error-input-message" />
+            <InputText @bind-Value="RegisterUserModel.LastName" placeholder="Nom" class="base-input"/>
+            <ValidationMessage For="@(() => RegisterUserModel.LastName)" class="error-input-message"/>
         </div>
         <div class="form-group">
-            <InputText @bind-Value="_registerUserModel.Email" placeholder="Email" class="base-input" />
-            <ValidationMessage For="@(() => _registerUserModel.Email)" class="error-input-message" />
+            <InputText @bind-Value="RegisterUserModel.Email" placeholder="Email" class="base-input"/>
+            <ValidationMessage For="@(() => RegisterUserModel.Email)" class="error-input-message"/>
         </div>
         <div class="form-group">
-            <InputText @bind-Value="_registerUserModel.Password" placeholder="Mot de passe" type="password"
-                class="base-input" />
-            <ValidationMessage For="@(() => _registerUserModel.Password)" class="error-input-message" />
+            <InputText @bind-Value="RegisterUserModel.Password" placeholder="Mot de passe" type="password"
+                       class="base-input"/>
+            <ValidationMessage For="@(() => RegisterUserModel.Password)" class="error-input-message"/>
         </div>
         <div class="form-group">
-            <InputText @bind-Value="_registerUserModel.ConfirmPassword" placeholder="Confirmer votre mot de passe"
-                type="password" class="base-input" />
-            <ValidationMessage For="@(() => _registerUserModel.ConfirmPassword)" class="error-input-message" />
+            <InputText @bind-Value="RegisterUserModel.ConfirmPassword" placeholder="Confirmer votre mot de passe"
+                       type="password" class="base-input"/>
+            <ValidationMessage For="@(() => RegisterUserModel.ConfirmPassword)" class="error-input-message"/>
         </div>
         <div class="self-start mb-5">
             <button class="base-button primary-color" type="submit">S'inscrire</button>
@@ -43,13 +57,41 @@
             </span>
         </div>
     </EditForm>
+    }
 </section>
 
 @code {
-    private readonly RegisterUserModel _registerUserModel;
     
-    private async Task HandleValideSubmit()
+    [SupplyParameterFromForm(FormName="registerForm")]
+    private RegisterUserModel RegisterUserModel { get; set; } = new();
+    
+    private string ErrorMessage = string.Empty;
+
+    private bool RegisterIsSuccess;
+    
+    private async Task HandleRegister()
     {
-        // TODO 
+        ErrorMessage = string.Empty;
+            
+        var client = ClientFactory.CreateClient("lectorNetApi");
+
+        var response = await client.PostAsJsonAsync("auth/register", RegisterUserModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            try
+            {
+                await response.Content.ReadFromJsonAsync<AuthResponseModel>();
+                RegisterIsSuccess = true;
+            }
+            catch (Exception)
+            {
+                ErrorMessage = "Nous sommes désolés, une erreur est survenue. Veuillez réessayer ultérieurement.";
+            }
+        }
+        else
+        {
+            ErrorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())?.Detail!;
+        }
     }
 }

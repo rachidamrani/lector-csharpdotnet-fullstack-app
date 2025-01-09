@@ -1,5 +1,3 @@
-using LectorNet.UI.Services;
-using LectorNet.UI.Services.Interfaces;
 
 namespace LectorNet.UI.Authentication;
 
@@ -29,8 +27,6 @@ public static class AuthenticationDependencyInjection
         
         services.AddHttpContextAccessor();
         services.AddCascadingAuthenticationState();
-
-        services.AddScoped<IAuthService, AuthService>();
         
         return services;
     }

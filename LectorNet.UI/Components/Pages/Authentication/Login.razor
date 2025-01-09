@@ -2,21 +2,19 @@
 
 @using System.Security.Claims
 @using LectorNet.UI.Common.HttpResponseModels
-@using LectorNet.UI.Services
-@using LectorNet.UI.Services.Interfaces
 @using LectorNet.UI.ViewModels
 @using Microsoft.AspNetCore.Authentication
 
 @inject NavigationManager NavigationManager
 @inject IHttpClientFactory ClientFactory
-@inject IAuthService AuthService
+@inject IHttpContextAccessor HttoContextAccessor
 
 
 <section class="h-full mx-auto flex flex-col items-center justify-center w-80">
 
     @if (!string.IsNullOrEmpty(ErrorMessage))
     {
-        <Alert
+        <ErrorAlert
             Title="Connexion échouée !"
             Message="@ErrorMessage"/>
     }
@@ -65,9 +63,22 @@
             {
                 try
                 {
-                    var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+                    var loginResponse = await response.Content.ReadFromJsonAsync<AuthResponseModel>();
 
-                    await AuthService.Login(new User(loginResponse!.Id, loginResponse.FirstName, loginResponse.LastName, loginResponse.Role));
+                    var claims = new List<Claim>
+                    {
+                        new(ClaimTypes.NameIdentifier, loginResponse!.FirstName),
+                        new(ClaimTypes.Name, $"{loginResponse.FirstName} {loginResponse.LastName}"),
+                        new(ClaimTypes.Role, loginResponse.Role)
+                    };
+
+                    var identity = new ClaimsIdentity(claims, AuthConstants.AuthScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    var authProperties = new AuthenticationProperties { IsPersistent = true };
+
+                    if (HttoContextAccessor.HttpContext != null)
+                        await HttoContextAccessor.HttpContext.SignInAsync(
+                            AuthConstants.AuthScheme, principal, authProperties);
 
                     LoginIsSuccess = true;
                 }
