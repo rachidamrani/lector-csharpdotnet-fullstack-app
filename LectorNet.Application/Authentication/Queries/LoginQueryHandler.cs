@@ -3,6 +3,7 @@ using LectorNet.Application.Authentication.Common;
 using LectorNet.Application.Common;
 using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
+using LectorNet.Application.Users.Common;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -26,7 +27,7 @@ public class LoginQueryHandler(
             var user = await usersRepository.GetByEmailAsync(query.Email);
 
             if (user is null)
-                return AuthenticationErrors.UserNotFound;
+                return UserErrors.UserNotFound;
 
             var passwordIsCorrect = passwordHasher.IsCorrectPassword(query.Password, user.Password);
 

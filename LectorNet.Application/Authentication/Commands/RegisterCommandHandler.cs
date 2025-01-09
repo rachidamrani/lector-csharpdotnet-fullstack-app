@@ -3,6 +3,7 @@ using LectorNet.Application.Authentication.Common;
 using LectorNet.Application.Common;
 using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
+using LectorNet.Application.Users.Common;
 using LectorNet.Domain.Models.Users;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,7 @@ public class RegisterCommandHandler(
             logger.LogInformation("Registering new user with email : {Email}", command.Email);
             
             if (await usersRepository.ExistByEmailAsync(command.Email))
-                return AuthenticationErrors.UserAlreadyExists;
+                return UserErrors.UserAlreadyExists;
 
             var hashPasswordResult = passwordHasher.HashPassword(command.Password);
 

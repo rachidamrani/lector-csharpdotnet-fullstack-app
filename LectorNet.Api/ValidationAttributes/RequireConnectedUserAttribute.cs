@@ -24,6 +24,6 @@ public class RequireConnectedUserAttribute : Attribute, IAsyncActionFilter
 
         await next();
     }
-    
-    public static bool IsValidGuid(string guidString) => Guid.TryParse(guidString, out _);
+
+    private static bool IsValidGuid(string guidString) => Guid.TryParse(guidString, out _);
 }

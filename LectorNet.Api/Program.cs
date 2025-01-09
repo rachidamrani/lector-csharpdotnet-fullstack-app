@@ -17,11 +17,11 @@ builder.Services
 var app = builder.Build();
 
 // This is for Docker usage only.
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<LectorNetDbContext>();
-    context.Database.Migrate();
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var context = scope.ServiceProvider.GetRequiredService<LectorNetDbContext>();
+//     context.Database.Migrate();
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

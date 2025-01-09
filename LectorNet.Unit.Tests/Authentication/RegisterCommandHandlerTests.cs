@@ -5,6 +5,7 @@ using LectorNet.Application.Authentication.Common;
 using LectorNet.Application.Common;
 using LectorNet.Application.Common.Interfaces;
 using LectorNet.Application.Users;
+using LectorNet.Application.Users.Common;
 using LectorNet.Domain.Models.Users;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -81,7 +82,7 @@ public class RegisterCommandHandlerTests
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
-        result.FirstError.Should().Be(AuthenticationErrors.UserAlreadyExists);
+        result.FirstError.Should().Be(UserErrors.UserAlreadyExists);
     }
 
     [Fact]
