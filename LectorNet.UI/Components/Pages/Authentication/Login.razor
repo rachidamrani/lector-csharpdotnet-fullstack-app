@@ -1,104 +1,87 @@
 @page "/auth/login"
 
-@using System.Text
-@using LectorNet.UI.Common
+@using System.Security.Claims
 @using LectorNet.UI.Common.HttpResponseModels
+@using LectorNet.UI.Services
+@using LectorNet.UI.Services.Interfaces
 @using LectorNet.UI.ViewModels
+@using Microsoft.AspNetCore.Authentication
 
 @inject NavigationManager NavigationManager
 @inject IHttpClientFactory ClientFactory
+@inject IAuthService AuthService
 
-@rendermode InteractiveServer
 
 <section class="h-full mx-auto flex flex-col items-center justify-center w-80">
-    @if (IsLoading)
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
     {
-        <LoadingSpinner/>
+        <Alert
+            Title="Connexion échouée !"
+            Message="@ErrorMessage"/>
     }
-    else
-    {
-        if (AlertIsOpen)
-        {
-            <Alert 
-                Title="Connexion Echouée !"
-                Message="@ErrorMessage"
-                CloseAlertCallBack="CloseAlert"
-                IsSuccess=false/>
-        }
-        
-        <h3 class="text-3xl font-bold mb-6"> Se connecter</h3>
-        <EditForm Model="LoginUserModel" class="w-full">
-            <DataAnnotationsValidator/>
-            <div class="form-group">
-                <InputText @bind-Value="LoginUserModel.Email" placeholder="Email" class="base-input"/>
-                <ValidationMessage For="() => LoginUserModel.Email" class="error-input-message"/>
-            </div>
-            <div class="form-group">
-                <InputText @bind-Value="LoginUserModel.Password" placeholder="Mot de passe" type="password"
-                           class="base-input"/>
-                <ValidationMessage For="() => LoginUserModel.Password" class="error-input-message"/>
-            </div>
-            <div class="self-start mb-5">
-                <button class="base-button primary-color" @onclick="AuthenticateAsync">Se connecter</button>
-            </div>
-            <div class="form-group self-start">
-                <span class="text-xs block">Vous n'avez pas un compte ?
-                    <a href="/auth/register" class="text-green-700">Créer un compte</a>
-                </span>
-            </div>
-        </EditForm>
-    }
+
+    <h3 class="text-3xl font-bold mb-6"> Se connecter</h3>
+    <EditForm Model="LoginUserModel" FormName="loginForm" class="w-full" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator/>
+        <div class="form-group">
+            <InputText @bind-Value="LoginUserModel.Email" placeholder="Email" class="base-input"/>
+            <ValidationMessage For="() => LoginUserModel.Email" class="error-input-message"/>
+        </div>
+        <div class="form-group">
+            <InputText @bind-Value="LoginUserModel.Password" placeholder="Mot de passe" type="password"
+                       class="base-input"/>
+            <ValidationMessage For="() => LoginUserModel.Password" class="error-input-message"/>
+        </div>
+        <div class="self-start mb-5">
+            <button class="base-button primary-color">Se connecter</button>
+        </div>
+        <div class="form-group self-start">
+            <span class="text-xs block">Vous n'avez pas un compte ?
+                <a href="/auth/register" class="text-green-700">Créer un compte</a>
+            </span>
+        </div>
+    </EditForm>
 </section>
 
 @code {
-
-    [CascadingParameter] public HttpContext HttpContext { get; set; } = null!;
-
-    [SupplyParameterFromForm]
+    
+    [SupplyParameterFromForm(FormName="loginForm")]
     private LoginUserModel LoginUserModel { get; set; } = new();
-    
-    private bool IsLoading { get; set; }
-    
-    private bool AlertIsOpen { get; set;  }
 
-    private string? ErrorMessage { get; set; }
+    private string ErrorMessage = string.Empty;
 
-    private async Task AuthenticateAsync()
+    private bool LoginIsSuccess;
+    
+    private async Task HandleLogin()
     {
-        AlertIsOpen = false;
-        IsLoading = true;
-        ErrorMessage = "";
-
-        try
-        {
+            ErrorMessage = string.Empty;
+            
             var client = ClientFactory.CreateClient("lectorNetApi");
 
             var response = await client.PostAsJsonAsync("auth/login", LoginUserModel);
 
             if (response.IsSuccessStatusCode)
             {
-                NavigationManager.NavigateTo("/");
+                try
+                {
+                    var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+
+                    await AuthService.Login(new User(loginResponse!.Id, loginResponse.FirstName, loginResponse.LastName, loginResponse.Role));
+
+                    LoginIsSuccess = true;
+                }
+                catch (Exception)
+                {
+                    ErrorMessage = "Nous sommes désolés, une erreur est survenue. Veuillez réessayer ultérieurement.";
+                }
+                
+                if(LoginIsSuccess) NavigationManager.NavigateTo("/");
             }
             else
             {
-                AlertIsOpen = true;
-                ErrorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())!.Detail;
+                ErrorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())?.Detail!;
             }
-        }
-        catch (Exception e)
-        {
-            ErrorMessage = "Une erreur est survenue !";
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    public void CloseAlert()
-    {
-        AlertIsOpen = false;
-        ErrorMessage = string.Empty;
     }
 }
 

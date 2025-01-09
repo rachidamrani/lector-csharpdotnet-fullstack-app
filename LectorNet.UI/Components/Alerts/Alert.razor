@@ -1,12 +1,8 @@
 @inject IJSRuntime JsRuntime
 
-@rendermode InteractiveServer
-
-
 <div class="alert">
     <div class="alert-header">
         <span class="title">@Title</span>
-        <img src="images/close-icon.svg" @onclick="CloseAlert" alt=""/>
     </div>
     <div class="alert-body">
        @Message
@@ -17,13 +13,6 @@
     [Parameter] public string Title { get; set; } = string.Empty;
     
     [Parameter] public string Message { get; set; } = string.Empty;
-    
-    [Parameter] public bool IsSuccess { get; set;  }
-    
-    [Parameter] public EventCallback CloseAlertCallBack { get; set; }
 
-    private async Task CloseAlert()
-    {
-        await CloseAlertCallBack.InvokeAsync();
-    }
+    [Parameter] public bool IsSuccess { get; set; }
 }

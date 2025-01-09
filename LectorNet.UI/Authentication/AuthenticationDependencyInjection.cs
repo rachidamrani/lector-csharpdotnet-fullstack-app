@@ -1,3 +1,6 @@
+using LectorNet.UI.Services;
+using LectorNet.UI.Services.Interfaces;
+
 namespace LectorNet.UI.Authentication;
 
 public static class AuthenticationDependencyInjection
@@ -19,11 +22,16 @@ public static class AuthenticationDependencyInjection
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
 
-                    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                     options.SlidingExpiration = true;
                 }
             );
+        
+        services.AddHttpContextAccessor();
+        services.AddCascadingAuthenticationState();
 
+        services.AddScoped<IAuthService, AuthService>();
+        
         return services;
     }
 }

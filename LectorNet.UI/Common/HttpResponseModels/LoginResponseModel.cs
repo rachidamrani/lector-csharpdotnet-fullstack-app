@@ -1,3 +1,3 @@
 namespace LectorNet.UI.Common.HttpResponseModels;
 
-public record LoginUserResponse(string FirstName, string LastName, string Email, string Role);
+public record LoginResponseModel(string Id, string FirstName, string LastName, string Email, string Role);

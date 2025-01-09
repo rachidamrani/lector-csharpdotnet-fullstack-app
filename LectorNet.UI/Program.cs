@@ -8,8 +8,6 @@ builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddCascadingAuthenticationState();
-
 builder.Services.AddBlazorAppAuthentication();
 
 builder.Services.AddHttpClient("lectorNetApi", configureClient =>
