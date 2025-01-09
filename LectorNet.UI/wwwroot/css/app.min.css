@@ -711,6 +711,7 @@ body, html {
   border-radius: 0.25rem;
   width: 100%;
   background-color: #ffffff;
+  box-shadow: inset 4px 4px 8px 0 rgba(0, 0, 0, 0.2), inset -4px -4px 6px 0 rgba(255, 255, 255, 0.5);
   &:focus {
     background-color: #FFF6EF;
     outline: none;
@@ -735,7 +736,7 @@ body, html {
 .card {
   padding: 1.25rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0.25rem;
 }
 
