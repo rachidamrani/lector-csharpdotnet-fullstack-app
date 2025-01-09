@@ -1,6 +1,7 @@
 using ErrorOr;
 using LectorNet.Application.Common;
 using LectorNet.Application.Common.Interfaces;
+using LectorNet.Application.Invitations.Common;
 using LectorNet.Application.Users;
 using LectorNet.Application.Users.Common;
 using LectorNet.Domain.Models.Invitations;
@@ -29,6 +30,10 @@ public class CreateInvitationCommandHandler(
             if (receiver is null) return UserErrors.UserNotFound;
 
             // If user exists create the invitation
+
+            if (receiver.Id == command.SenderId)
+                return InvitationErrors.SelfInvitationNotAllowed;
+            
             var invitation = new Invitation { ReceiverId = receiver.Id, SenderId = command.SenderId };
 
             await invitationsRepository.AddAsync(invitation);
