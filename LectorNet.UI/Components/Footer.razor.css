@@ -1,0 +1,7 @@
+footer {
+    @media (max-width: 680px) {
+        span {
+            font-size: .75rem;
+        }
+    }
+}
