@@ -6,7 +6,7 @@
 <nav class="flex justify-between items-center py-2 px-4 border-b-2 border-b-gray-300">
     <NavLink class="logo flex items-center justify-between gap-2 w-fit" href="/">
         <img src="images/book.svg" width="50" alt="book_logo" />
-        <h1 class="text-4xl font-extrabold">LectorNet</h1>
+        @* <h1 class="text-4xl font-extrabold">LectorNet</h1> *@
     </NavLink>
 
     <AuthorizeView>
@@ -32,11 +32,11 @@
     <div class="authentication_buttons">
         <AuthorizeView>
             <Authorized>
-                <NavLink class="base-button primary-color" href="auth/logout" id="logoutBtn">Se déconnecter
+                <NavLink class="base-button danger-color" href="auth/logout" id="logoutBtn">Se déconnecter
                 </NavLink>
             </Authorized>
             <NotAuthorized>
-                <NavLink class="base-button bg-black" href="auth/register">S'inscrire</NavLink>
+                <NavLink class="base-button bg-black " href="auth/register">S'inscrire</NavLink>
                 <NavLink class="base-button primary-color" href="auth/login">Se connecter</NavLink>
             </NotAuthorized>
         </AuthorizeView>

@@ -7,10 +7,10 @@
 
 @inject NavigationManager NavigationManager
 @inject IHttpClientFactory ClientFactory
-@inject IHttpContextAccessor HttoContextAccessor
+@inject IHttpContextAccessor HttpContextAccessor
 
 
-<section class="h-full mx-auto flex flex-col items-center justify-center w-80">
+<section class="h-full mx-auto flex flex-col items-center justify-center w-full">
 
     @if (!string.IsNullOrEmpty(ErrorMessage))
     {
@@ -53,46 +53,46 @@
     
     private async Task HandleLogin()
     {
-            ErrorMessage = string.Empty;
+        ErrorMessage = string.Empty;
             
-            var client = ClientFactory.CreateClient("lectorNetApi");
+        var client = ClientFactory.CreateClient("lectorNetApi");
 
-            var response = await client.PostAsJsonAsync("auth/login", LoginUserModel);
+        var response = await client.PostAsJsonAsync("auth/login", LoginUserModel);
 
-            if (response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
+        {
+            try
             {
-                try
+                var loginResponse = await response.Content.ReadFromJsonAsync<AuthResponseModel>();
+
+                var claims = new List<Claim>
                 {
-                    var loginResponse = await response.Content.ReadFromJsonAsync<AuthResponseModel>();
+                    new(ClaimTypes.NameIdentifier, loginResponse!.FirstName),
+                    new(ClaimTypes.Name, $"{loginResponse.FirstName} {loginResponse.LastName}"),
+                    new(ClaimTypes.Role, loginResponse.Role)
+                };
 
-                    var claims = new List<Claim>
-                    {
-                        new(ClaimTypes.NameIdentifier, loginResponse!.FirstName),
-                        new(ClaimTypes.Name, $"{loginResponse.FirstName} {loginResponse.LastName}"),
-                        new(ClaimTypes.Role, loginResponse.Role)
-                    };
+                var identity = new ClaimsIdentity(claims, AuthConstants.AuthScheme);
+                var principal = new ClaimsPrincipal(identity);
+                var authProperties = new AuthenticationProperties { IsPersistent = true };
 
-                    var identity = new ClaimsIdentity(claims, AuthConstants.AuthScheme);
-                    var principal = new ClaimsPrincipal(identity);
-                    var authProperties = new AuthenticationProperties { IsPersistent = true };
+                if (HttpContextAccessor.HttpContext != null)
+                    await HttpContextAccessor.HttpContext.SignInAsync(
+                        AuthConstants.AuthScheme, principal, authProperties);
 
-                    if (HttoContextAccessor.HttpContext != null)
-                        await HttoContextAccessor.HttpContext.SignInAsync(
-                            AuthConstants.AuthScheme, principal, authProperties);
-
-                    LoginIsSuccess = true;
-                }
-                catch (Exception)
-                {
-                    ErrorMessage = "Nous sommes désolés, une erreur est survenue. Veuillez réessayer ultérieurement.";
-                }
+                LoginIsSuccess = true;
+            }
+            catch (Exception)
+            {
+                ErrorMessage = "Nous sommes désolés, une erreur est survenue. Veuillez réessayer ultérieurement.";
+            }
                 
-                if(LoginIsSuccess) NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                ErrorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())?.Detail!;
-            }
+            if(LoginIsSuccess) NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = (await response.Content.ReadFromJsonAsync<ErrorResponse>())?.Detail!;
+        }
     }
 }
 

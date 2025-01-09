@@ -4,92 +4,80 @@
 @using LectorNet.UI.ViewModels
 @using Microsoft.AspNetCore.Authorization
 
-
 @attribute [Authorize]
 
-<section>
+<section class="h-full mx-auto flex flex-col items-center justify-center w-full">
     <h2> Ajouter un livre </h2>
-    @if (_addBookModel is not null)
-    {
-        <EditForm Model="_addBookModel" OnValidSubmit="HandleAddBook">
-            <DataAnnotationsValidator />
-            <div class="addBookForm">
-                <div class="form-group">
-                    <label>Titre : </label>
-                    <InputText @bind-Value="_addBookModel.Title" placeholder="Titre" class="base-input" />
-                    <ValidationMessage For="() => _addBookModel.Title" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Auteur : </label>
-                    <InputText @bind-Value="_addBookModel.Author" placeholder="Auteur" class="base-input" />
-                    <ValidationMessage For="() => _addBookModel.Author" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Isbn : </label>
-                    <InputText @bind-Value="_addBookModel.Isbn" placeholder="Isbn" class="base-input" />
-                    <ValidationMessage For="() => _addBookModel.Isbn" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Genre : </label>
-                    <InputSelect @bind-Value="_addBookModel.Genre" placeholder="Genre" class="base-input">
-                        <option value="">Genre</option>
-                        @foreach (BookGenre genre in BookGenre.List)
-                        {
-                            <option value="@(genre.Name)">@genre.Name</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="() => _addBookModel.Genre" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Année de publication : </label>
-                    <InputText @bind-Value="_addBookModel.PublicationYear" placeholder="Année de publication"
-                        class="base-input" />
-                    <ValidationMessage For="() => _addBookModel.PublicationYear" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Maison d'édition : </label>
-                    <InputText @bind-Value="_addBookModel.PublishingHouse" placeholder="Maison d'édition"
-                        class="base-input" />
-                    <ValidationMessage For="() => _addBookModel.PublishingHouse" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Nombre de pages : </label>
-                    <InputNumber step="1" min="0" @bind-Value="_addBookModel.NumberOfPages" placeholder="Nombre de pages"
-                        class="base-input" />
-                    <ValidationMessage For="() => _addBookModel.NumberOfPages" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <label>Couverture du livre : </label>
-                    <InputFile @bind-Value="_addBookModel.BookCoverLink" class="base-input" OnChange="OnFileChange" />
-                    <ValidationMessage For="() => _addBookModel.BookCoverLink" class="error-input-message" />
-                </div>
-                <div class="form-group">
-                    <InputCheckbox @bind-Value="_addBookModel.AlreadyRead" placeholder="Livre lu" />
-                    <label>Avez-vous déja lu ce livre ? </label>
-                </div>
+    <EditForm Model="AddBookModel" FormName="addBookForm" OnValidSubmit="HandleAddBook" class="w-full">
+        <DataAnnotationsValidator />
+        <div class="addBookForm">
+            <div class="form-group">
+                <label>Titre : </label>
+                <InputText @bind-Value="AddBookModel.Title" placeholder="Titre" class="base-input" />
+                <ValidationMessage For="() => AddBookModel.Title" class="error-input-message" />
             </div>
             <div class="form-group">
-                <button type="submit" class="base-button primary-color"> Ajouter </button>
+                <label>Auteur : </label>
+                <InputText @bind-Value="AddBookModel.Author" placeholder="Auteur" class="base-input" />
+                <ValidationMessage For="() => AddBookModel.Author" class="error-input-message" />
             </div>
-        </EditForm>
-    }
+            <div class="form-group">
+                <label>Isbn : </label>
+                <InputText @bind-Value="AddBookModel.Isbn" placeholder="Isbn" class="base-input" />
+                <ValidationMessage For="() => AddBookModel.Isbn" class="error-input-message" />
+            </div>
+            <div class="form-group">
+                <label>Genre : </label>
+                <InputSelect @bind-Value="AddBookModel.Genre" placeholder="Genre" class="base-input">
+                    <option value="">Genre</option>
+                    @foreach (BookGenre genre in BookGenre.List)
+                    {
+                        <option value="@(genre.Name)">@genre.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => AddBookModel.Genre" class="error-input-message" />
+            </div>
+            <div class="form-group">
+                <label>Année de publication : </label>
+                <InputText @bind-Value="AddBookModel.PublicationYear" placeholder="Année de publication"
+                           class="base-input" />
+                <ValidationMessage For="() => AddBookModel.PublicationYear" class="error-input-message" />
+            </div>
+            <div class="form-group">
+                <label>Maison d'édition : </label>
+                <InputText @bind-Value="AddBookModel.PublishingHouse" placeholder="Maison d'édition"
+                           class="base-input" />
+                <ValidationMessage For="() => AddBookModel.PublishingHouse" class="error-input-message" />
+            </div>
+            <div class="form-group">
+                <label>Nombre de pages : </label>
+                <InputNumber step="1" min="0" @bind-Value="AddBookModel.NumberOfPages" placeholder="Nombre de pages"
+                             class="base-input" />
+                <ValidationMessage For="() => AddBookModel.NumberOfPages" class="error-input-message" />
+            </div>
+            <div class="form-group">
+                <label>Couverture du livre : </label>
+                <InputFile @bind-Value="AddBookModel.BookCover" class="base-input"/>
+                <ValidationMessage For="() => AddBookModel.BookCover" class="error-input-message" />
+            </div>
+            <div class="form-group">
+                <InputCheckbox @bind-Value="AddBookModel.AlreadyRead" placeholder="Livre lu" />
+                <label>Avez-vous déja lu ce livre ? </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="base-button primary-color"> Ajouter </button>
+        </div>
+    </EditForm>
 </section>
 
 @code {
-    private readonly AddBookModel? _addBookModel = new();
     
-    private async Task OnFileChange(InputFileChangeEventArgs e)
-    {
-        string format = "images/png";
-        IBrowserFile resizedImage = await e.File.RequestImageFileAsync(format, 200, 200);
-        byte[] buffer = new byte[resizedImage.Size];
-        var readAsync = await resizedImage.OpenReadStream().ReadAsync(buffer);
-        string imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-        _addBookModel!.BookCoverLink = imageData;
-    }
+    [SupplyParameterFromForm(FormName="addBookFrom")]
+    private AddBookModel AddBookModel { get; set; } = new();
 
     private async Task HandleAddBook()
     {
-        // TODO : handle sending adding book request to API
+        await Task.CompletedTask;
     }
 }

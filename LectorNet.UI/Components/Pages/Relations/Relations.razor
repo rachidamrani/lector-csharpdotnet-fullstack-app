@@ -1,7 +1,38 @@
 @page "/relations"
 
-<h3>Relations</h3>
+@rendermode InteractiveServer
+
+<section class="h-full">
+    <h2> Ajouter un ami lecteur </h2>
+    
+    <div class="form">
+        <input type="text" placeholder="Email" class="base-input"/>
+        <button class="base-button primary-color" @onclick="HandleSendInvitaiton"> Envoyer l'invitation </button>
+    </div>
+    
+    <div class="invitations">
+        <div class="left-side card">
+            <h4>Mes relations</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, velit.</p>
+        </div>
+        <div class="right-side card">
+            <h4>Mes invitations</h4>
+            <div class="received-invitations">
+                <h5>Mes invitations reçues</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, voluptates?</p>
+            </div>
+            <div class="sent-invitations">
+                <h5>Mes invitations envoyées</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, voluptates?</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 @code {
-    
+
+    private async Task HandleSendInvitaiton()
+    {
+        Console.WriteLine("Ok!");
+    }
 }

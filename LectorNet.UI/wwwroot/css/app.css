@@ -63,12 +63,23 @@ body, html {
 }
 
 
+.card {
+    padding: 1.25rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #fff;
+    border-radius: 0.25rem;
+}
+
 .primary-color {
     background-color: var(--primary);
 }
 
 .secondary-color {
     background-color: var(--secondary);
+}
+
+.danger-color {
+    background-color: var(--danger);
 }
 
 .error-input-message {

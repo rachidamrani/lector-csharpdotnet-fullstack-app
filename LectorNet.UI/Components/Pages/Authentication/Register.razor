@@ -1,22 +1,19 @@
 @page "/auth/register"
 
-@using LectorNet.Contracts.Authentication
 @using LectorNet.UI.Common.HttpResponseModels
 @using LectorNet.UI.ViewModels
 
-@inject NavigationManager NavigationManager
 @inject IHttpClientFactory ClientFactory
 
 
 <section class="h-full mx-auto flex flex-col items-center justify-center w-full">
-    
     @if (RegisterIsSuccess)
     {
         <SuccessNotification/>
     }
     else
-    { 
-        @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+         if (!string.IsNullOrEmpty(ErrorMessage))
     {
         <ErrorAlert
             Title="Connexion échouée !"
@@ -24,7 +21,7 @@
     }
     
     <h3 class="text-3xl font-bold mb-6"> S'inscrire </h3>
-    <EditForm Model="@RegisterUserModel" FormName="registerForm" OnValidSubmit="HandleRegister" class="w-full">
+    <EditForm Model="RegisterUserModel" FormName="registerForm" OnValidSubmit="HandleRegister" class="w-full">
         <DataAnnotationsValidator/>
         <div class="form-group">
             <InputText @bind-Value="RegisterUserModel.FirstName" placeholder="Prénom" class="base-input"/>
@@ -72,7 +69,7 @@
     private async Task HandleRegister()
     {
         ErrorMessage = string.Empty;
-            
+        
         var client = ClientFactory.CreateClient("lectorNetApi");
 
         var response = await client.PostAsJsonAsync("auth/register", RegisterUserModel);
